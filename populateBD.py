@@ -1,27 +1,32 @@
 import json
 from faker import Faker
 from crud import criar_registro
+import random
+from datetime import datetime
 
-# Criar uma instância do Faker
 faker = Faker()
-
-dados = []
-
-def ler_dados():
-    try:
-        with open('registros.json', 'r') as arquivo:
-            dados = json.load(arquivo)
-    except FileNotFoundError:
-        dados = []
-    
-    return dados
+formato_data = "%Y-%m-%d %H:%M:%S"
 
 def salvar_dados(dados):
-    with open('registros.json', 'w') as arquivo:
-        json.dump(dados, arquivo, indent=2)
+    with open('database/registros.json', 'w', encoding='utf-8') as arquivo:
+        json.dump(dados, arquivo, indent=2, ensure_ascii=False)
+
+def criar_registro(id: str, tipo: str, valor: float, data: str):
+    return {'id': id, 'tipo': tipo, 'valor': valor, 'data': data}
 
 def populate():
-    registros = ler_dados()
-    for registro in registros:
-        criar_registro
+    dados = []
+    tipos = ["saque", "depósito", "investimento"]
+    for i in range(10):
+        tipo = random.choice(tipos)
+        valor = faker.unique.random_int()
+        data = str(datetime.now().strftime(formato_data))
+        id = tipo[0] + str(i) + "-" + data.split(".")[0].split(" ")[0]
+
+        registro = criar_registro(id, tipo, valor, data)
+        dados.append(registro)
     
+    salvar_dados(dados)
+
+populate()
+
