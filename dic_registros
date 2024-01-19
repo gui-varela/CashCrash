@@ -1,0 +1,24 @@
+from datetime import datetime
+
+registros_financeiros = []
+agora = datetime.now()
+
+def criar_registro(data, tipo, valor, montante_investimento=None):
+    novo_registro = {
+        'Data': data,
+        'Tipo': tipo,
+        'Valor': valor
+    }
+
+    if tipo == 'investimento':
+        novo_registro['Montante'] = montante_investimento
+
+    registros_financeiros.append(novo_registro)
+
+
+criar_registro(str(agora.day)+ '/' + str(agora.month) + '/' + str(agora.year), 'receita', 1000)
+criar_registro(str(agora.day)+ '/' + str(agora.month)  + '/' + str(agora.year), 'despesa', 500)
+criar_registro(str(agora.day)+ '/' + str(agora.month)  + '/' + str(agora.year), 'investimento', 2000, montante_investimento=2500)
+
+
+print(registros_financeiros)
