@@ -1,6 +1,7 @@
 from despedida import despedidaController
+from time import sleep
 
-entradaUsuario = input('''
+textoMenu = '''
 ----------------------------------
            MENU PRINCIPAL
 ----------------------------------
@@ -14,15 +15,17 @@ Bem-vindo! O que deseja fazer?
 [6] - Sair
 
 Sua escolha: '''
-)
 
 def menuPrincipalController():
   while True:
+    entradaUsuario = input(textoMenu)
+  
     if entradaUsuario == "6":
       despedidaController()
       break
     else:
-      print("Escolha inválida.\nDigite um número de 1 a 6.")
+      print("\nESCOLHA INVÁLIDA.\nDigite um número de 1 a 6.\n")
+      sleep(4)
 
 
 menuPrincipalController()
