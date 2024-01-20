@@ -1,13 +1,23 @@
-textoMenu = '''
-----------------------------------
-           MENU PRINCIPAL
-----------------------------------
-Bem-vindo! O que deseja fazer?
+import sys
+sys.path.append("edicao")
+from edicao.editarOperacao import editarOperacaoController
 
-[1] - Consultar extrato
-[2] - Depositar
-[3] - Sacar
-[4] - Acessar investimentos
-[5] - Editar/Cancelar operação
-[6] - Sair
+tela = '''
+----------------------------------
+      EDITAR/CANCELAR OPERAÇAO
+----------------------------------
 '''
+
+def menuEdicaoController():
+  print(tela)
+
+  acao = input("Deseja editar ou cancelar? [E/C]: ").upper().strip()
+  id = input("Digite o ID da operação: ")
+
+  print(acao)
+  
+  if acao == "E":
+    editarOperacaoController(id)
+  else:
+    print("cancelar")
+  

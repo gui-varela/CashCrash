@@ -1,7 +1,12 @@
+import sys
+sys.path.append("editarOuCancelar")
+
+from editarOuCancelar.opcoesMenu import menuEdicaoController
+
 from despedida import despedidaController
 from time import sleep
 
-textoMenu = '''
+entradaUsuario = input('''
 ----------------------------------
            MENU PRINCIPAL
 ----------------------------------
@@ -14,15 +19,13 @@ Bem-vindo! O que deseja fazer?
 [5] - Editar/Cancelar operação
 [6] - Sair
 
-Sua escolha: '''
+Sua escolha: ''')
 
 def menuPrincipalController():
-  while True:
-    entradaUsuario = input(textoMenu)
-  
     if entradaUsuario == "6":
       despedidaController()
-      break
+    elif entradaUsuario == "5":
+      menuEdicaoController()
     else:
       print("\nESCOLHA INVÁLIDA.\nDigite um número de 1 a 6.\n")
       sleep(4)
