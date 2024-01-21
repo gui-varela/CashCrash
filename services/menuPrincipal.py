@@ -1,6 +1,10 @@
+import sys
+import os
 from despedida import despedidaController
 from time import sleep
-
+sys.path.append('services\editarOuCancelar')
+import opcoesMenu
+from opcoesMenu import menuEditarOuCancelar
 textoMenu = '''
 ----------------------------------
            MENU PRINCIPAL
@@ -19,7 +23,10 @@ Sua escolha: '''
 def menuPrincipalController():
   while True:
     entradaUsuario = input(textoMenu)
-  
+
+    if entradaUsuario == "5":
+      menuEditarOuCancelar()
+      break
     if entradaUsuario == "6":
       despedidaController()
       break
