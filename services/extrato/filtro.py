@@ -1,6 +1,8 @@
+import json
+
 textoMenu = '''
 ----------------------------------
-           MENU PRINCIPAL
+       FILTRO - INVESTIMENTOS
 ----------------------------------
 Bem-vindo! O que deseja fazer?
 
@@ -11,3 +13,12 @@ Bem-vindo! O que deseja fazer?
 [5] - Editar/Cancelar operação
 [6] - Sair
 '''
+
+
+def filtro():
+    with open('../../database/registros.json') as registro:
+        dados = registro.read()
+        
+    print(dados)
+
+filtro()
