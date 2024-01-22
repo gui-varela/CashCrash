@@ -18,14 +18,14 @@ def criar_registro(id: str, tipo: str, valor: float, data: str):
 
 def populate():
     dados = []
-    tipos = ["saque", "depósito", "investimento"]
+    tipos = ["saque", "deposito", "investimento"] # tive que  tirar o acento pois estava dando bug
 
     if path.isfile('database/registros.json') is False:
         os.mkdir('database')
-        with open('database/registros.json', 'w') as registro:
+        with open('database/registros.json', 'w', encoding='utf-8') as registro:
             registro.write('[{}]')
     
-    for i in range(10):
+    for i in range(11):
         tipo = random.choice(tipos)
         valor = faker.unique.random_int()
         data = str(datetime.now().strftime(formato_data))

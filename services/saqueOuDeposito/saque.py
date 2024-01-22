@@ -1,3 +1,4 @@
+from crud import adicionar_registro
 from services.saqueOuDeposito.sucessoOperacao import sucessoOperacaoController
 
 
@@ -14,11 +15,12 @@ def iniciarSaque():
     entradaUsuario = input(textoMenu)
     while True:
         if entradaUsuario.isnumeric():
+            adicionar_registro("saque", entradaUsuario)
             sucessoOperacaoController("SAQUE", entradaUsuario)
             break
         elif entradaUsuario == 'voltar':
             menuPrincipalController()
         else:
             print('\n\nvalor inválido. Escreva um numero.\n\n')
-            textoDeFalha = '''Escreva 'voltar' para voltar para o menu principal.\n\nInsira o valor do depósito:  '''
+            textoDeFalha = '''Escreva 'voltar' para voltar para o menu principal.\n\nInsira o valor do deposito:  '''
             entradaUsuario = input(textoDeFalha)

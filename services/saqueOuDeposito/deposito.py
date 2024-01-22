@@ -1,3 +1,5 @@
+import json
+from crud import adicionar_registro
 from services.saqueOuDeposito.sucessoOperacao import sucessoOperacaoController
 
 
@@ -14,7 +16,8 @@ def iniciarDeposito():
     entradaUsuario = input(textoMenu)
     while True:
         if entradaUsuario.isnumeric():
-            sucessoOperacaoController("DEPÓSITO", entradaUsuario)
+            adicionar_registro("deposito", entradaUsuario)
+            sucessoOperacaoController("DEPOSITO", entradaUsuario)
             break
         elif entradaUsuario == 'voltar':
             menuPrincipalController()

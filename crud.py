@@ -3,6 +3,8 @@ import sys
 from datetime import datetime
 sys.path.append('services\editarOuCancelar\cancelamento')
 import cancelarOperacao
+
+
 tipo_edit = {'D':'Despesa', 'R': 'Receita', 'I': 'Investimento'}
 def ler_dados():
     try:
@@ -14,23 +16,37 @@ def ler_dados():
     return dados
 
 def salvar_dados(dados):
-    with open('database/registros.json', 'w') as arquivo:
-        json.dump(dados, arquivo, indent=2)
+    with open('database/registros.json', 'w', encoding='utf-8') as arquivo:
+        json.dump(dados, arquivo, indent=2, ensure_ascii=False)
 
-def criar_registro(nome, idade):
-    return {'nome': nome, 'idade': idade}
+def criar_registro(valor, tipo):
+    dados = ler_dados()
+    cont = ""
+    for x in dados[-1]['id'][1:]:
+        if x != '-':
+            cont = cont + x
+        else:
+            break
+    cont = int(cont) + 1
+    formato_data = "%Y-%m-%d %H:%M:%S"
+    data = str(datetime.now().strftime(formato_data))
+    if tipo == "deposito":
+        return {'id': f"d{cont}-{data[:11]}", 'tipo': tipo, 'valor': int(valor), 'data': data}
+    if tipo == "saque":
+        return {'id': f"s{cont}-{data[:11]}", 'tipo': tipo, 'valor': int(valor), 'data': data}
 
 def listar_registros():
     dados = ler_dados()
     for i, registro in enumerate(dados, 1):
-        print(f"{i}. Nome: {registro['nome']}, Idade: {registro['idade']}")
+        print({'id': {registro['id']}, 'tipo': {registro['tipo']}, 'valor': {registro['valor']}, 'data': {registro['data']}})
 
-def adicionar_registro(nome, idade):
+def adicionar_registro(tipo, valor):
     dados = ler_dados()
-    novo_registro = criar_registro(nome, idade)
+    novo_registro = criar_registro(valor, tipo)
     dados.append(novo_registro)
     salvar_dados(dados)
     print("Registro adicionado com sucesso!")
+
 
 def editar_registro(dados, id_change):
         index_change = None
