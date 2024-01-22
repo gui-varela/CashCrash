@@ -1,5 +1,7 @@
-from despedida import despedidaController
 from time import sleep
+from services.saqueOuDeposito.deposito import iniciarDeposito
+from services.despedida import despedidaController
+from services.saqueOuDeposito.saque import iniciarSaque
 
 textoMenu = '''
 ----------------------------------
@@ -17,15 +19,18 @@ Bem-vindo! O que deseja fazer?
 Sua escolha: '''
 
 def menuPrincipalController():
-  while True:
-    entradaUsuario = input(textoMenu)
-  
-    if entradaUsuario == "6":
-      despedidaController()
-      break
-    else:
-      print("\nESCOLHA INVÁLIDA.\nDigite um número de 1 a 6.\n")
-      sleep(4)
+    while True:
+        entradaUsuario = input(textoMenu)
 
-
-menuPrincipalController()
+        if entradaUsuario == "6":
+            despedidaController()
+            break
+        elif entradaUsuario == "2":
+            iniciarDeposito()
+            break
+        elif entradaUsuario == "3":
+            iniciarSaque()
+            break
+        else:
+            print("\nESCOLHA INVÁLIDA.\nDigite um número de 1 a 6.\n")
+            sleep(4)
