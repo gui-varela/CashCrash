@@ -1,4 +1,6 @@
 import json
+from os import path
+import os
 from faker import Faker
 from crud import criar_registro
 import random
@@ -17,6 +19,12 @@ def criar_registro(id: str, tipo: str, valor: float, data: str):
 def populate():
     dados = []
     tipos = ["saque", "depósito", "investimento"]
+
+    if path.isfile('database/registros.json') is False:
+        os.mkdir('database')
+        with open('database/registros.json', 'w') as registro:
+            registro.write('[{}]')
+    
     for i in range(10):
         tipo = random.choice(tipos)
         valor = faker.unique.random_int()
