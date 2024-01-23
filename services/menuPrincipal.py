@@ -1,13 +1,13 @@
 import sys
 import os
 from time import sleep
-
-from services.despedida import despedidaController
+from despedida import despedidaController
 sys.path.append('services\editarOuCancelar')
 import opcoesMenu
 from opcoesMenu import menuEditarOuCancelar
 from services.saqueOuDeposito.deposito import iniciarDeposito
 from services.saqueOuDeposito.saque import iniciarSaque
+
 
 textoMenu = '''
 ----------------------------------
@@ -43,3 +43,4 @@ def menuPrincipalController():
         else:
             print("\nESCOLHA INVÁLIDA.\nDigite um número de 1 a 6.\n")
             sleep(4)
+menuPrincipalController()
