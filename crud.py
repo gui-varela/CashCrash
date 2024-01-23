@@ -2,7 +2,7 @@ import json
 import sys
 from datetime import datetime
 sys.path.append('services\editarOuCancelar\cancelamento')
-import cancelarOperacao
+#import cancelarOperacao
 
 
 tipo_edit = {'D':'Despesa', 'R': 'Receita', 'I': 'Investimento'}

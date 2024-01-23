@@ -3,9 +3,10 @@ import os
 from time import sleep
 
 from services.despedida import despedidaController
+from services.editarOuCancelar.opcoesMenu import menuEditarOuCancelar
 sys.path.append('services\editarOuCancelar')
-import opcoesMenu
-from opcoesMenu import menuEditarOuCancelar
+#import opcoesMenu
+#from opcoesMenu import menuEditarOuCancelar
 from services.saqueOuDeposito.deposito import iniciarDeposito
 from services.saqueOuDeposito.saque import iniciarSaque
 
