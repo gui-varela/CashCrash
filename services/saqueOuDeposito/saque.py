@@ -19,7 +19,7 @@ def iniciarSaque():
             sucessoOperacaoController("SAQUE")
             break
         elif entradaUsuario == 'voltar':
-            menuPrincipalController()
+            menuPrincipalController(isPrimeiroAcesso = False)
         else:
             print('\n\nvalor inválido. Escreva um numero.\n\n')
             textoDeFalha = '''Escreva 'voltar' para voltar para o menu principal.\n\nInsira o valor do deposito:  '''

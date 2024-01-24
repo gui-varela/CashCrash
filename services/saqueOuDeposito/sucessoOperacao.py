@@ -24,7 +24,7 @@ Sua escolha: '''.format(nomeOp, nomeOp.capitalize(), saldo)
         entradaUsuario = input(textoMenu)
         
         if entradaUsuario == "1":
-            menuPrincipalController()
+            menuPrincipalController(isPrimeiroAcesso = False)
             break
         elif entradaUsuario == "2":
             despedidaController()
