@@ -1,11 +1,12 @@
 from services.despedida import despedidaController
+from crud import ler_saldo
 
-
-def sucessoOperacaoController(nomeOp, valor):
+def sucessoOperacaoController(nomeOp):
     #atrasar a importação do módulo menuPrincipalController até o momento em que 
     #ele é realmente necessário, evitando assim a importação circular.  ----Credito ChatGPT / stackoverflow
     
     from services.menuPrincipal import menuPrincipalController
+    saldo = ler_saldo()
     textoMenu = '''
 ----------------------------------
            {} REALIZADO!
@@ -17,7 +18,7 @@ R$ {}
 [1] - Menu principal
 [2] - Sair
 
-Sua escolha: '''.format(nomeOp, nomeOp.capitalize(), valor)
+Sua escolha: '''.format(nomeOp, nomeOp.capitalize(), saldo)
     
     while True:
         entradaUsuario = input(textoMenu)

@@ -16,7 +16,7 @@ def iniciarSaque():
     while True:
         if entradaUsuario.isnumeric():
             adicionar_registro("saque", entradaUsuario)
-            sucessoOperacaoController("SAQUE", entradaUsuario)
+            sucessoOperacaoController("SAQUE")
             break
         elif entradaUsuario == 'voltar':
             menuPrincipalController()

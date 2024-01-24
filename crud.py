@@ -2,7 +2,6 @@ import json
 import sys
 from datetime import datetime
 sys.path.append('services\editarOuCancelar\cancelamento')
-import cancelarOperacao
 
 
 tipo_edit = {'D':'Despesa', 'R': 'Receita', 'I': 'Investimento'}
@@ -100,4 +99,16 @@ A operação de ID {id_change} foi cancelada e não será realizada!
         else:
             print(f"Elemento com ID {id_change} não encontrado.")
         salvar_dados(dados)
+
+def ler_saldo():
+    dados = ler_dados()
+    saldo = 0
+
+    for dado in dados:
+        if dado['tipo'] == "deposito":
+            saldo += dado['valor']
+        elif dado['tipo'] == "saque":
+            saldo -= dado['valor']
+
+    return saldo
 
