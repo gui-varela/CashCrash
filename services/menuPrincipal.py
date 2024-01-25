@@ -3,9 +3,11 @@ import os
 from time import sleep
 
 from services.despedida import despedidaController
+from services.editarOuCancelar.opcoesMenu import menuEditarOuCancelar
+from services.extrato.filtro import consultarExtrato
 sys.path.append('services\editarOuCancelar')
-import opcoesMenu
-from opcoesMenu import menuEditarOuCancelar
+#import opcoesMenu
+#from opcoesMenu import menuEditarOuCancelar
 from services.saqueOuDeposito.deposito import iniciarDeposito
 from services.saqueOuDeposito.saque import iniciarSaque
 
@@ -27,9 +29,11 @@ Sua escolha: '''
 def menuPrincipalController():
     while True:
         entradaUsuario = input(textoMenu)
-
         if entradaUsuario == "6":
             despedidaController()
+            break
+        elif entradaUsuario == "1":
+            consultarExtrato()
             break
         elif entradaUsuario == "2":
             iniciarDeposito()
