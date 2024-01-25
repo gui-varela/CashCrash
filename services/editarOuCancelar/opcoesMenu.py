@@ -1,13 +1,14 @@
 import sys
+from crud import deletar_registro, editar_registro
 sys.path.append('.')
 sys.path.append('services')
 #from menuPrincipal import menuPrincipalController
 from despedida import despedidaController
 from time import sleep
 #import crud
-from crud import deletar_registro
-from crud import ler_dados
-from crud import editar_registro
+# from crud import deletar_registro
+# from crud import ler_dados
+# from crud import editar_registro
 import json
 import os
 
@@ -28,7 +29,7 @@ def menuEditarOuCancelar():
       break
     elif editarOuCancelar in ['2', 'dois', 'DOIS','Dois','[2]','DOis']:
        import menuPrincipal
-       menuPrincipal.menuPrincipalController()
+       menuPrincipal.menuPrincipalController(isPrimeiroAcesso = False)
        break
     elif editarOuCancelar in ['C', 'c']:
         id_change = input("Insira o ID da operação a ser cancelada")
