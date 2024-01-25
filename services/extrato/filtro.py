@@ -3,7 +3,7 @@ from datetime import datetime
 
 informacoes = '''
 ----------------------------------
-           FILTRO - INVESTIMENTOS
+           FILTRO - EXTRATO
 ----------------------------------
 DICAS DE CONSULTA:
 
