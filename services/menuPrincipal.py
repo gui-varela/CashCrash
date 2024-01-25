@@ -4,6 +4,7 @@ from time import sleep
 
 from services.despedida import despedidaController
 from services.editarOuCancelar.opcoesMenu import menuEditarOuCancelar
+from services.extrato.filtro import consultarExtrato
 sys.path.append('services\editarOuCancelar')
 from services.saqueOuDeposito.deposito import iniciarDeposito
 from services.saqueOuDeposito.saque import iniciarSaque
@@ -31,6 +32,9 @@ def menuPrincipalController(isPrimeiroAcesso = True):
 
         if entradaUsuario == "6":
             despedidaController()
+            break
+        elif entradaUsuario == "1":
+            consultarExtrato()
             break
         elif entradaUsuario == "2":
             iniciarDeposito()
