@@ -41,6 +41,9 @@ def menuPrincipalController():
         elif entradaUsuario == "3":
             iniciarSaque()
             break
+        elif entradaUsuario == "4":
+            print("Apertou 4")
+            break
         elif entradaUsuario == "5":
             menuEditarOuCancelar()
             break

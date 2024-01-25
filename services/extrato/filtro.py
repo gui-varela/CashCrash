@@ -9,7 +9,7 @@ DICAS DE CONSULTA:
 
 - Deixe vazio para ignorar
 - Exemplo de data: 30/09/2021
-- Valor = Valor investido
+- Depósito/Saque/Investimento = D/S/I
 
 '''
 
@@ -20,6 +20,7 @@ def consultarExtrato():
     data_final = input("Data final (DD/MM/AAAA): ")
     valor_inicial = float(input("Valor inicial: "))
     valor_final = float(input("Valor final: "))
+    tipo_filtro = input('''Filtrar por Deposito [D]\nFiltrar por Saque [S]\nFiltrar por Investimento [I]\n\nNão filtrar por tipo.[Em branco]\n''')
 
     # Lendo os dados do arquivo JSON
     with open('database/registros.json', 'r') as arquivo:
@@ -38,7 +39,14 @@ def consultarExtrato():
                     (not valor_final or dado["valor"] <= valor_final)
 
         if data_valida and valor_valido:
-            dados_filtrados.append(dado)
+            if tipo_filtro.lower() == "d" and dado["tipo"] == "deposito":
+                dados_filtrados.append(dado)
+            elif tipo_filtro.lower() == "s" and dado["tipo"] == "saque":
+                dados_filtrados.append(dado)
+            #elif tipo_filtro.lower() == "i" and dado["tipo"] == "investimento":
+            #    dados_filtrados.append(dado)
+            elif tipo_filtro.lower() == "":
+                dados_filtrados.append(dado)
 
     # Imprimir os dados filtrados
     for dado in dados_filtrados:
