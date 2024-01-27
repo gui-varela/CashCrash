@@ -9,19 +9,46 @@ DICAS DE CONSULTA:
 
 - Deixe vazio para ignorar
 - Exemplo de data: 30/09/2021
-- Depósito/Saque/Investimento = D/S/I
+- Depósito/Saque = D/S
 
 '''
+
+def tratarInputData(mensagem):
+     while True:
+        try:
+            data = input(mensagem)
+            datetime.strptime(data, "%d/%m/%Y")
+            return data
+        except:
+            print("Favor escreva uma data no formato (DD/MM/AAAA).")
+
+def tratarInputValor(mensagem):
+    while True:
+        try:
+            valor = float(input(mensagem).replace(',','.'))
+            return valor
+        except:
+            print("Favor escreva um numero no formato XXXX.XX")
+
+def tratarInputTipo(mensagem):
+    while True:
+        try:
+            tipo = input(mensagem)
+            if tipo.lower() not in ["d", "s",""]:
+                raise
+            return tipo
+        except:
+            print("Favor escreva um filtro apropriado ou deixe em branco")
 
 def consultarExtrato():
     print(informacoes)
     # Solicitar entradas do usuário
-    data_inicial = input("Data inicial (DD/MM/AAAA): ")
-    data_final = input("Data final (DD/MM/AAAA): ")
-    valor_inicial = float(input("Valor inicial: "))
-    valor_final = float(input("Valor final: "))
-    tipo_filtro = input('''Filtrar por Deposito [D]\nFiltrar por Saque [S]\nFiltrar por Investimento [I]\n\nNão filtrar por tipo.[Em branco]\n''')
-
+    data_inicial = tratarInputData("Data inicial (DD/MM/AAAA): ")
+    data_final = tratarInputData("Data final (DD/MM/AAAA): ")
+    valor_inicial = tratarInputValor("Valor inicial: ")
+    valor_final = tratarInputValor("Valor final: ")
+    tipo_filtro = tratarInputTipo('''Filtrar por Deposito [D]\nFiltrar por Saque [S]\n\nNão filtrar por tipo.[Em branco]\n''')
+    
     # Lendo os dados do arquivo JSON
     with open('database/registros.json', 'r') as arquivo:
         dados_json = json.load(arquivo)
@@ -43,8 +70,6 @@ def consultarExtrato():
                 dados_filtrados.append(dado)
             elif tipo_filtro.lower() == "s" and dado["tipo"] == "saque":
                 dados_filtrados.append(dado)
-            #elif tipo_filtro.lower() == "i" and dado["tipo"] == "investimento":
-            #    dados_filtrados.append(dado)
             elif tipo_filtro.lower() == "":
                 dados_filtrados.append(dado)
 
