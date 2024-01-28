@@ -3,8 +3,9 @@ import sys
 from datetime import datetime
 sys.path.append('services\editarOuCancelar\cancelamento')
 import services.editarOuCancelar.cancelamento.cancelarOperacao
+from faker import Faker
 
-
+fake = Faker()
 tipo_edit = {'D':'Despesa', 'R': 'Receita', 'I': 'Investimento'}
 def ler_dados():
     try:
@@ -22,18 +23,41 @@ def salvar_dados(dados):
 def criar_registro(valor, tipo):
     dados = ler_dados()
     cont = ""
-    for x in dados[-1]['id'][1:]:
+    for x in dados[-1]['codigo'][1:]:
         if x != '-':
             cont = cont + x
         else:
             break
     cont = int(cont) + 1
+    id_ficticio = fake.random_int(min=1, max=10000000) # gera um id aleatório
     formato_data = "%Y-%m-%d %H:%M:%S"
     data = str(datetime.now().strftime(formato_data))
     if tipo == "deposito":
-        return {'id': f"d{cont}-{data[:11]}", 'tipo': tipo, 'valor': int(valor), 'data': data}
+        return {'id': id_ficticio,'codigo': f"d{cont}-{data[:10]}", 'tipo': tipo, 'valor': int(valor), 'data': data}
     if tipo == "saque":
-        return {'id': f"s{cont}-{data[:11]}", 'tipo': tipo, 'valor': int(valor), 'data': data}
+        return {'id': id_ficticio,'codigo': f"d{cont}-{data[:10]}", 'tipo': tipo, 'valor': int(valor), 'data': data}
+    
+def criarInvestimento(valor, tipo):
+    dados = ler_dados()
+    cont = ""
+    for x in dados[-1]['codigo'][1:]:
+        if x != '-':
+            cont = cont + x
+        else:
+            break
+    cont = int(cont) + 1
+    id_ficticio = fake.random_int(min=1, max=10000000) # gera um id aleatório
+    formato_data = "%Y-%m-%d %H:%M:%S"
+    data = str(datetime.now().strftime(formato_data))
+    if tipo == "CDB":
+        return {'id': id_ficticio, 'tipo': 'investimento','codigo': f"i{cont}-{data[:10]}", \
+                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipoInvestimento': {"tipo": tipo, "juros": 0.000039}}
+    elif tipo == "LCI":
+        return {'id': id_ficticio, 'tipo': 'investimento','codigo': f"i{cont}-{data[:10]}", \
+                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipoInvestimento': {"tipo": tipo, "juros": 0.000038}}
+    else:
+        return {'id': id_ficticio, 'tipo': 'investimento','codigo': f"i{cont}-{data[:10]}", \
+                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipoInvestimento': {"tipo": tipo, "juros": 0.000036}}
 
 def listar_registros():
     dados = ler_dados()
@@ -48,7 +72,9 @@ def listar_registros_por_tipo(tipo):
 def listar_registros_por_data_e_valor(dados, data_inicial, data_final, valor_inicial, valor_final):
     dados_filtrados = []
     
+    
     for dado in dados:
+        #print("aqui2", dado)
         data_formatada = datetime.strptime(dado["data"], '%Y-%m-%d %H:%M:%S')
 
         data_valida = (not data_inicial or data_formatada >= data_inicial) and \
@@ -60,7 +86,7 @@ def listar_registros_por_data_e_valor(dados, data_inicial, data_final, valor_ini
         if data_valida and valor_valido:
             dados_filtrados.append(dado)
 
-    return dados_filtrados   
+    return dados_filtrados
 
 
 def adicionar_registro(tipo, valor):
@@ -74,7 +100,7 @@ def adicionar_registro(tipo, valor):
 def editar_registro(dados, id_change):
         index_change = None
         for i, item in enumerate(dados):
-            if item.get('id') == id_change:
+            if item.get('codigo') == id_change:
                 index_change = i
                 break
 
@@ -92,7 +118,8 @@ def editar_registro(dados, id_change):
                 print("Valor invalido!")
             if isinstance(registro_edit_valor, int):
                 registro_edit['valor'] = registro_edit_valor
-            new_date = str(datetime.now())
+            formato_data = "%Y-%m-%d %H:%M:%S"
+            new_date = str(datetime.now().strftime(formato_data))
             registro_edit['data'] = new_date
             dados[index_change] = registro_edit
             salvar_dados(dados)
@@ -108,7 +135,7 @@ Data: {new_date}""")
 def deletar_registro(dados, id_change):
         index_change = None
         for i, item in enumerate(dados):
-            if item.get('id') == id_change:
+            if item.get('codigo') == id_change:
                 index_change = i
                 break
         # If the element is found, delete it

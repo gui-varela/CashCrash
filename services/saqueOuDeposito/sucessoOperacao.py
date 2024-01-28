@@ -15,7 +15,6 @@ def sucessoOperacaoController(nomeOp, valor):
 R$ {}
 
 [1] - Menu principal
-[2] - Sair
 
 Sua escolha: '''.format(nomeOp, nomeOp.capitalize(), valor)
     
@@ -25,8 +24,5 @@ Sua escolha: '''.format(nomeOp, nomeOp.capitalize(), valor)
         if entradaUsuario == "1":
             menuPrincipalController()
             break
-        elif entradaUsuario == "2":
-            despedidaController()
-            break
         else:
-            print("\nESCOLHA INVÁLIDA.\nDigite 1 para voltar ao menu principal ou 2 para sair.\n")
+            print("\nESCOLHA INVÁLIDA.\nDigite 1 para voltar ao menu principal.\n")
