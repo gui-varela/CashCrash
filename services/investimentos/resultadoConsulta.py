@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from services.utils import calcular_montante
+
 
 
 textoResultado = '''
@@ -26,11 +28,18 @@ def resultadoConsultaInvestimentoController(investimentos):
 
 def formatar_investimento(investimento):
     data_formatada = datetime.strptime(investimento['data'],'%Y-%m-%d %H:%M:%S')
+    data_atual = datetime.now() 
+    dias_passados = (data_atual - data_formatada).days
+    montante = calcular_montante(investimento['valor'], investimento['tipo_investimento']['juros'], dias_passados)
+
     return f"""
 ==========  {data_formatada.strftime('%d/%m/%Y')}  ==========
 
+        Título: {investimento['tipo_investimento']['titulo']}
+
         Valor: R$ {format(investimento['valor'], ".2f")}
-        Montante: {format(investimento['valor'], ".2f")} 
+        Montante: R$ {format(montante, ".2f")} 
+        
         ID: {investimento['id']}
     """
 
