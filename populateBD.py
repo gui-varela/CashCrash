@@ -48,15 +48,15 @@ def populate():
     tipos_investimento = [
         {
             'titulo': "CDB",
-            'juros': 3.9e-05
-        },
-        {
-            'titulo': "LCA",
-            'juros': 3.6e-05
+            'juros': 3.9e-04
         },
         {
             'titulo': "LCI",
-            'juros': 3.8e-05
+            'juros': 3.8e-04
+        },
+        {
+            'titulo': "LCA",
+            'juros': 3.6e-04
         }
     ]
 

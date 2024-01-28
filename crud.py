@@ -51,13 +51,13 @@ def criarInvestimento(valor, tipo):
     data = str(datetime.now().strftime(formato_data))
     if tipo == "CDB":
         return {'id': id_ficticio, 'tipo': 'investimento','codigo': f"i{cont}-{data[:10]}", \
-                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipoInvestimento': {"tipo": tipo, "juros": 0.000039}}
+                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipoInvestimento': {"tipo": tipo, "juros": 0.00039}}
     elif tipo == "LCI":
         return {'id': id_ficticio, 'tipo': 'investimento','codigo': f"i{cont}-{data[:10]}", \
-                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipoInvestimento': {"tipo": tipo, "juros": 0.000038}}
+                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipoInvestimento': {"tipo": tipo, "juros": 0.00038}}
     else:
         return {'id': id_ficticio, 'tipo': 'investimento','codigo': f"i{cont}-{data[:10]}", \
-                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipoInvestimento': {"tipo": tipo, "juros": 0.000036}}
+                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipoInvestimento': {"tipo": tipo, "juros": 0.00036}}
 
 def listar_registros():
     dados = ler_dados()
