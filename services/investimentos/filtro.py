@@ -1,9 +1,12 @@
-import json
 from datetime import datetime
+
+from crud import listar_registros_por_tipo, listar_registros_por_data_e_valor
+from services.investimentos.resultadoConsulta import resultadoConsultaInvestimentoController
+
 
 informacoes = '''
 ----------------------------------
-           FILTRO - INVESTIMENTOS
+      FILTRO - INVESTIMENTOS
 ----------------------------------
 DICAS DE CONSULTA:
 
@@ -13,46 +16,72 @@ DICAS DE CONSULTA:
 
 '''
 
-def consultarExtrato():
+def filtroInvestimentosController():
     print(informacoes)
-    # Solicitar entradas do usuário
-    data_inicial = input("Data inicial (DD/MM/AAAA): ")
-    data_final = input("Data final (DD/MM/AAAA): ")
-    valor_inicial = float(input("Valor inicial: "))
-    valor_final = float(input("Valor final: "))
+    
+    data_inicial, data_final = validarInputsDeData()
+    valor_inicial, valor_final = validarInputsDeValor()
+    
 
-    # Lendo os dados do arquivo JSON
-    with open('database/registros.json', 'r') as arquivo:
-        dados_json = json.load(arquivo)
+    dados_investimento = listar_registros_por_tipo("investimento")
+    
+    dados_filtrados = listar_registros_por_data_e_valor(
+        dados_investimento,
+        data_inicial,
+        data_final,
+        valor_inicial,
+        valor_final
+    )
 
-    # Converter as datas de string para objeto datetime
-    for dado in dados_json:
-        dado["data"] = datetime.strptime(dado["data"], "%Y-%m-%d %H:%M:%S")
+    resultadoConsultaInvestimentoController(dados_filtrados)
 
-    # Filtrar dados com base nas informações fornecidas pelo usuário
-    dados_filtrados = []
-    for dado in dados_json:
-        data_valida = (not data_inicial or dado["data"] >= datetime.strptime(data_inicial, "%d/%m/%Y")) and \
-                    (not data_final or dado["data"] <= datetime.strptime(data_final, "%d/%m/%Y"))
-        valor_valido = (not valor_inicial or dado["valor"] >= valor_inicial) and \
-                    (not valor_final or dado["valor"] <= valor_final)
 
-        if data_valida and valor_valido:
-            dados_filtrados.append(dado)
+def validarInputsDeData():
+    datas_validas = False
 
-    # Imprimir os dados filtrados
-    for dado in dados_filtrados:
-        print(f"ID: {dado['id']}, Tipo: {dado['tipo']}, Valor: {dado['valor']}, Data: {dado['data']}")
-    respostaUser = input("Deseja Fazer outra consulta?\n\nEscreva [1] para fazer outra consulta\nEscreva [2] para voltar para o menu principal\n\n")
-    while True:
-        if respostaUser == '1':
-            consultarExtrato()
-            break
-        elif respostaUser == '2':
-            from services.menuPrincipal import menuPrincipalController
-            menuPrincipalController()
-            break
+    while not datas_validas:
+        data_inicial = tratarInputData("Digite a data inicial: ")
+        data_final = tratarInputData("Digite a data final: ")
+
+        if data_inicial != "" and data_final != "" and data_inicial > data_final:
+            print("Data final deve ser posterior à data inicial. Insira as datas novamente.")
         else:
-            print('\n\nvalor inválido. Escreva um numero.\n\n')
-            respostaUser = input("\n\nDeseja Fazer outra consulta?\n\nEscreva [1] para fazer outra consulta\nEscreva [2] para voltar para o menu principal\n\n")
+            datas_validas = True
+    
+        return data_inicial, data_final
+
+
+def validarInputsDeValor():
+    valores_validos = False
+    
+    while not valores_validos:
+        valor_inicial = tratarInputValor("Digite o valor mínimo: ")
+        valor_final = tratarInputValor("Digite o valor máximo: ")
+
+        if valor_inicial != "" and valor_final != "" and valor_inicial > valor_final:
+            print("Valor máximo deve ser maior que o valor mínimo. Insira os valores novamente.")
+        else:
+            valores_validos = True
+
+        return valor_inicial, valor_final
+
+
+def tratarInputData(mensagemInput):
+    while True:
+        try:
+            data = input(mensagemInput)
+            data_formatada = datetime.strptime(data, "%d/%m/%Y")
+            return data_formatada
+        except:
+            print("Digite formato correto de data. (Exemplo: 09/12/2021)")
+
+
+def tratarInputValor(mensagemInput):
+    while True:
+        try:
+            valor = float(input(mensagemInput).replace(",", "."))
+            return valor
+        except:
+            print("Digite um formato correto de valor. (Exemplo: 1000.00)")
+
 
