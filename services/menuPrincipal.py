@@ -5,6 +5,7 @@ from time import sleep
 from services.despedida import despedidaController
 from services.editarOuCancelar.opcoesMenu import menuEditarOuCancelar
 from services.extrato.filtro import consultarExtrato
+from services.investimentos.menuInvestimentos import menuInvestimentosController
 sys.path.append('services\editarOuCancelar')
 #import opcoesMenu
 #from opcoesMenu import menuEditarOuCancelar
@@ -42,7 +43,7 @@ def menuPrincipalController():
             iniciarSaque()
             break
         elif entradaUsuario == "4":
-            print("Apertou 4")
+            menuInvestimentosController()
             break
         elif entradaUsuario == "5":
             menuEditarOuCancelar()
