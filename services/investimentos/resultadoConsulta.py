@@ -1,5 +1,7 @@
 from datetime import datetime
 
+
+
 textoResultado = '''
 ----------------------------------
        RESULTADO DA BUSCA
@@ -40,7 +42,8 @@ def exibir_investimentos(investimentos):
 def exibirMenuAposConsulta(entrada_usuario):
     while True:
       if entrada_usuario == '1':
-          from filtro import filtroInvestimentosController
+          #from filtro import filtroInvestimentosController
+          from services.investimentos.filtro import filtroInvestimentosController
           filtroInvestimentosController()
           break
       elif entrada_usuario == '2':

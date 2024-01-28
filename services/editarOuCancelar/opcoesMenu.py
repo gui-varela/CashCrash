@@ -26,7 +26,7 @@ def menuEditarOuCancelar():
        menuPrincipal.menuPrincipalController()
        break
     elif editarOuCancelar in ['C', 'c']:
-        id_change = input("Insira o ID da operação a ser cancelada: ")
+        id_change = input("Insira o codigo da operação a ser cancelada: ")
         try:
             with open('database/registros.json', 'r') as arquivo:
                 dados = json.load(arquivo)
@@ -39,7 +39,7 @@ def menuEditarOuCancelar():
         #os.remove('registros.json')
         break
     elif editarOuCancelar in ['E', 'e']:
-        id_change = input("Insira o ID da operação a ser editada: ")
+        id_change = input("Insira o codigo da operação a ser editada: ")
         try:
             with open('database/registros.json', 'r') as arquivo:
                 dados = json.load(arquivo)

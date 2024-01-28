@@ -1,6 +1,7 @@
 from time import sleep
 
 from services.investimentos.filtro import filtroInvestimentosController
+from services.investimentos.investir import InvestimentoMenuControler
 
 textoMenu = '''
 ----------------------------------
@@ -21,8 +22,8 @@ def menuInvestimentosController():
             filtroInvestimentosController()
             break
         elif entrada_usuario == "2":
-            print("\nEste serviço ainda não foi implementado. Tente novamente mais tarde\n\n")
-            sleep(4)
+            InvestimentoMenuControler()
+            break
         elif entrada_usuario == "3":
             from services.menuPrincipal import menuPrincipalController
             menuPrincipalController()
