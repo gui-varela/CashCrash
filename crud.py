@@ -1,12 +1,30 @@
 import json
 import sys
 from datetime import datetime
+from populateBD import gerar_codigo
 sys.path.append('services\editarOuCancelar\cancelamento')
 import services.editarOuCancelar.cancelamento.cancelarOperacao
 from faker import Faker
 
+
 fake = Faker()
-tipo_edit = {'D':'Despesa', 'R': 'Receita', 'I': 'Investimento'}
+dicionario_tipos = {'S':'saque', 'D': 'deposito', 'I': 'investimento', 's':'saque', 'd': 'deposito', 'i': 'investimento'}
+tipos_investimento = [
+        {
+            'titulo': "CDB",
+            'juros': 3.9e-05
+        },
+        {            
+            'titulo': "LCI",
+            'juros': 3.8e-05
+        },
+        {
+            'titulo': "LCA",
+            'juros': 3.6e-05
+        }
+    ]
+
+
 def ler_dados():
     try:
         with open('database/registros.json', 'r') as arquivo:
@@ -107,20 +125,35 @@ def editar_registro(dados, id_change):
         if index_change is not None:
             registro_edit = dados[index_change]
             print (f"\nRegistro a ser editado: \n {registro_edit}\n")
-            registro_edit_tipo = input("Insira [D] para transformar em despesa, [R] para transformar em receita e [I] para transformar em investimento.\nDeixe em branco para não alterar tipo\n")
-            if registro_edit_tipo in tipo_edit:
-                registro_edit['tipo'] = tipo_edit[registro_edit_tipo]
-            if registro_edit['tipo'] == "Investimento":
-                registro_edit_titulo = input("Insira o titulo atualizado:\n[1] - CDB (0,039%/dia)\n[2] - LCI (0,038%/dia)\n[3] - LCA (0,036%/dia)\n")
+            registro_novo_tipo = input("Insira [S] para transformar em saque, [D] para transformar em deposito e [I] para transformar em investimento.\nDeixe em branco para não alterar tipo\n")
+            
+            if registro_novo_tipo in dicionario_tipos:
+                registro_novo_tipo = dicionario_tipos[registro_novo_tipo]
+            else:
+                registro_novo_tipo = registro_edit['tipo']
+
+            if registro_edit['tipo'] == "investimento":
+                del registro_edit['tipo_investimento']
+            if registro_novo_tipo == "investimento":
+                while True:
+                    try:
+                        registro_edit_titulo = int(input("Insira o titulo atualizado:\n[1] - CDB (0,039%/dia)\n[2] - LCI (0,038%/dia)\n[3] - LCA (0,036%/dia)\n" ))
+                        registro_edit['tipo_investimento'] = tipos_investimento[registro_edit_titulo-1]
+                        break
+                    except:
+                        print("Titulo invalido")                        
+
+            registro_edit['tipo'] = registro_novo_tipo
+
             try:
                 registro_edit_valor = int(input("Insira o valor atualizado do registro.\nDeixe em branco para não alterar\n"))
-            except:
-                print("Valor invalido!")
-            if isinstance(registro_edit_valor, int):
                 registro_edit['valor'] = registro_edit_valor
+            except:
+                print("Valor inalterado")                
             formato_data = "%Y-%m-%d %H:%M:%S"
             new_date = str(datetime.now().strftime(formato_data))
             registro_edit['data'] = new_date
+            registro_edit['codigo'] = gerar_codigo(dados, registro_novo_tipo, new_date)
             dados[index_change] = registro_edit
             salvar_dados(dados)
             print(f"""----------------------------------
@@ -128,9 +161,7 @@ def editar_registro(dados, id_change):
 ----------------------------------
 A operação de id {id} foi editada com sucesso! Resultado após a edição:
 
-Tipo: {tipo_edit[registro_edit_tipo]}
-Valor: {registro_edit_valor}
-Data: {new_date}""")
+{dados[index_change]}""")
 
 def deletar_registro(dados, id_change):
         index_change = None

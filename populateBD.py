@@ -2,7 +2,7 @@ import json
 from os import path
 import os
 from faker import Faker
-from crud import criar_registro
+#from crud import criar_registro
 import random
 from datetime import datetime, date, time
 import functools
