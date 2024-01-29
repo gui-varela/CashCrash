@@ -15,7 +15,7 @@ def iniciarDeposito():
     while True:
         if entradaUsuario.isnumeric():
             adicionar_registro("deposito", entradaUsuario)
-            sucessoOperacaoController("DEPOSITO")
+            sucessoOperacaoController("DEPOSITO", entradaUsuario)
             break
         elif entradaUsuario == 'voltar':
             from services.menuPrincipal import menuPrincipalController
