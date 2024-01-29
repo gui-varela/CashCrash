@@ -1,3 +1,7 @@
+import os
+import shutil
+import json
+
 def calcular_montante(capital: float, taxa: float, dias_passados: int):
   """
     Calcula o montante de um investimento aplicado em juros compostos.
@@ -18,3 +22,12 @@ def gerar_codigo(dados, tipo, data):
     cont_dados_por_tipo = len(dados_por_tipo)+1
     codigo = f"{tipo[0]}{cont_dados_por_tipo}-{data[:10]}"
     return codigo
+
+
+def exportar_relatorio(dados):
+    nome_relatorio = "relatorio.json"
+    caminho_destino = os.path.join(os.path.expanduser("~"), "Downloads", nome_relatorio)
+    with open(f'{caminho_destino}', 'w', encoding='utf-8') as arquivo:
+        json.dump(dados, arquivo, indent=2, ensure_ascii=False)
+        
+    print(f"Relatório exportado para: {caminho_destino}")

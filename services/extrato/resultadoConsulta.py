@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from services.utils import exportar_relatorio
+
 
 textoResultado = '''
 ----------------------------------
@@ -27,13 +29,15 @@ def resultadoConsultaController(operacoes):
     valorTotal = 0
     for operação in operacoes:
         valorTotal += operação["valor"]
-    print("adfasdasda", valorTotal)
     if len(operacoes) == 0:
       print(textoBuscaSemResultados)
     else:
       print(textoResultado)
       exibir_operacoes(operacoes, valorTotal)
       print(textoFim)
+      escolhaExportar = input("Deseja exportar o relatório? (s/n)\n Sua escolha: ")
+      if escolhaExportar.lower() == "s":
+        exportar_relatorio(operacoes)
 
     exibirMenuAposConsulta()
 
@@ -54,6 +58,7 @@ def exibir_operacoes(operacoes, valorTotal):
     for operacao in operacoes:
         print(formatar_operacao(operacao))
     print("Valor total: R$", float(valorTotal))
+    
 
 def exibirMenuAposConsulta():
     while True:     

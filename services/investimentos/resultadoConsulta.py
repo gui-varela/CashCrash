@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from services.utils import calcular_montante
+from services.utils import calcular_montante, exportar_relatorio
 
 
 
@@ -34,6 +34,9 @@ def resultadoConsultaInvestimentoController(investimentos, valor):
         exibir_investimentos(investimentos)
         print("Valor Total Investido: R$",float(valor))
         print(textoFim)
+        escolhaExportar = input("Deseja exportar o relatório? (s/n)\n Sua escolha: ")
+        if escolhaExportar.lower() == "s":
+            exportar_relatorio(investimentos)
 
     entrada_usuario = input("\n\nDeseja Fazer outra consulta?\n\nEscreva [1] para fazer outra consulta\nEscreva [2] para voltar para o menu principal\n\n")
     exibirMenuAposConsulta(entrada_usuario)
