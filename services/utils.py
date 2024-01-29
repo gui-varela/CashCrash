@@ -12,3 +12,9 @@ def calcular_montante(capital: float, taxa: float, dias_passados: int):
     """
   montante = capital * (1 + taxa) ** dias_passados
   return montante
+
+def gerar_codigo(dados, tipo, data):
+    dados_por_tipo = [ dado for dado in dados if dado['tipo'] == tipo ]
+    cont_dados_por_tipo = len(dados_por_tipo)+1
+    codigo = f"{tipo[0]}{cont_dados_por_tipo}-{data[:10]}"
+    return codigo

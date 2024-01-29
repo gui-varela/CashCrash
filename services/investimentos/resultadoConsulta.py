@@ -26,12 +26,13 @@ textoBuscaSemResultados = '''
 ----------------------------------
 '''
 
-def resultadoConsultaInvestimentoController(investimentos):
+def resultadoConsultaInvestimentoController(investimentos, valor):
     if len(investimentos) == 0:
       print(textoBuscaSemResultados)
     else:
         print(textoResultado)
         exibir_investimentos(investimentos)
+        print("Valor Total Investido: R$",float(valor))
         print(textoFim)
 
     entrada_usuario = input("\n\nDeseja Fazer outra consulta?\n\nEscreva [1] para fazer outra consulta\nEscreva [2] para voltar para o menu principal\n\n")

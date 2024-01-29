@@ -78,5 +78,6 @@ def consultarExtrato():
                 dados_filtrados.append(dado)
             elif tipo_filtro.lower() == "" and dado['tipo'] != 'investimento':
                 dados_filtrados.append(dado)
+        
 
     resultadoConsultaController(dados_filtrados)

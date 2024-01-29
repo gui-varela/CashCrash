@@ -33,7 +33,7 @@ def filtroInvestimentosController():
         valor_final
     )
 
-    resultadoConsultaInvestimentoController(dados_filtrados)
+    resultadoConsultaInvestimentoController(dados_filtrados[0], dados_filtrados[1])
 
 
 def validarInputsDeData():

@@ -24,11 +24,15 @@ textoBuscaSemResultados = '''
 '''
 
 def resultadoConsultaController(operacoes):
+    valorTotal = 0
+    for operação in operacoes:
+        valorTotal += operação["valor"]
+    print("adfasdasda", valorTotal)
     if len(operacoes) == 0:
       print(textoBuscaSemResultados)
     else:
       print(textoResultado)
-      exibir_operacoes(operacoes)
+      exibir_operacoes(operacoes, valorTotal)
       print(textoFim)
 
     exibirMenuAposConsulta()
@@ -46,9 +50,10 @@ def formatar_operacao(operacao):
     """
 
     
-def exibir_operacoes(operacoes):
+def exibir_operacoes(operacoes, valorTotal):
     for operacao in operacoes:
         print(formatar_operacao(operacao))
+    print("Valor total: R$", float(valorTotal))
 
 def exibirMenuAposConsulta():
     while True:     
