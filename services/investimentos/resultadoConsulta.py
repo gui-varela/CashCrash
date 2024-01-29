@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from services.utils import calcular_montante, exportar_relatorio
+
 
 
 textoResultado = '''
@@ -14,24 +16,47 @@ textoFim = '''
 ----------------------------------
 '''
 
-def resultadoConsultaInvestimentoController(investimentos):
-  print(textoResultado)
-  exibir_investimentos(investimentos)
-  print(textoFim)
-      
-  entrada_usuario = input("Deseja Fazer outra consulta?\n\nEscreva [1] para fazer outra consulta\nEscreva [2] para voltar para o menu principal\n\n")
- 
-  exibirMenuAposConsulta(entrada_usuario)
+textoBuscaSemResultados = '''
+----------------------------------
+    A busca não retornou
+    resultados.
+
+    Tente tornar sua busca mais
+    abrangente.
+----------------------------------
+'''
+
+def resultadoConsultaInvestimentoController(investimentos, valor):
+    if len(investimentos) == 0:
+      print(textoBuscaSemResultados)
+    else:
+        print(textoResultado)
+        exibir_investimentos(investimentos)
+        print("Valor Total Investido: R$",float(valor))
+        print(textoFim)
+        escolhaExportar = input("Deseja exportar o relatório? (s/n)\n Sua escolha: ")
+        if escolhaExportar.lower() == "s":
+            exportar_relatorio(investimentos)
+
+    entrada_usuario = input("\n\nDeseja Fazer outra consulta?\n\nEscreva [1] para fazer outra consulta\nEscreva [2] para voltar para o menu principal\n\n")
+    exibirMenuAposConsulta(entrada_usuario)
   
 
 def formatar_investimento(investimento):
     data_formatada = datetime.strptime(investimento['data'],'%Y-%m-%d %H:%M:%S')
+    data_atual = datetime.now() 
+    dias_passados = (data_atual - data_formatada).days
+    montante = calcular_montante(investimento['valor'], investimento['tipo_investimento']['juros'], dias_passados)
+
     return f"""
 ==========  {data_formatada.strftime('%d/%m/%Y')}  ==========
 
-        Valor: R$ {format(investimento['valor'], ".2f")}
-        Montante: {format(investimento['valor'], ".2f")} 
-        ID: {investimento['id']}
+    Título: {investimento['tipo_investimento']['titulo']}
+
+    Valor: R$ {format(investimento['valor'], ".2f")}
+    Montante: R$ {format(montante, ".2f")} 
+    
+    ID: {investimento['id']}
     """
 
     
@@ -51,5 +76,6 @@ def exibirMenuAposConsulta(entrada_usuario):
           menuPrincipalController()
           break
       else:
-          print('\n\nValor inválido. Escreva um numero.\n\n')
-          entrada_usuario = input("\n\nDeseja Fazer outra consulta?\n\nEscreva [1] para fazer outra consulta\nEscreva [2] para voltar para o menu principal\n\n")
+          print('\n\nValor inválido. Escreva um número.\n\n')
+          entrada_usuario = "\nEscreva [1] para fazer outra consulta\nEscreva [2] para voltar para o menu principal\n\nSua escolha: "
+          

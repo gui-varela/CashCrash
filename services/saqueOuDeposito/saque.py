@@ -16,11 +16,11 @@ def iniciarSaque():
     while True:
         if entradaUsuario.isnumeric():
             adicionar_registro("saque", entradaUsuario)
-            sucessoOperacaoController("SAQUE")
+            sucessoOperacaoController("SAQUE", entradaUsuario)
             break
         elif entradaUsuario == 'voltar':
-            menuPrincipalController(isPrimeiroAcesso = False)
+            menuPrincipalController()
         else:
             print('\n\nvalor inválido. Escreva um numero.\n\n')
-            textoDeFalha = '''Escreva 'voltar' para voltar para o menu principal.\n\nInsira o valor do deposito:  '''
+            textoDeFalha = '''Escreva 'voltar' para voltar para o menu principal.\n\nInsira o valor do saque:  '''
             entradaUsuario = input(textoDeFalha)

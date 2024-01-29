@@ -6,6 +6,8 @@ import random
 from datetime import datetime, date, time
 import functools
 
+from services.utils import gerar_codigo
+
 faker = Faker()
 formato_data = "%Y-%m-%d %H:%M:%S"
 
@@ -34,12 +36,6 @@ def gerar_data_aleatoria():
     data_formatada = str(data.strftime(formato_data))
     return data_formatada
 
-def gerar_codigo(dados, tipo, data):
-    dados_por_tipo = [ dado for dado in dados if dado['tipo'] == tipo ]
-    cont_dados_por_tipo = len(dados_por_tipo)+1
-    codigo = f"{tipo[0]}{cont_dados_por_tipo}-{data[:10]}"
-    return codigo
-
 
 def populate():
     dados = []
@@ -47,15 +43,15 @@ def populate():
     tipos_investimento = [
         {
             'titulo': "CDB",
-            'juros': 3.9e-05
-        },
-        {
-            'titulo': "LCA",
-            'juros': 3.6e-05
+            'juros': 3.9e-04
         },
         {
             'titulo': "LCI",
-            'juros': 3.8e-05
+            'juros': 3.8e-04
+        },
+        {
+            'titulo': "LCA",
+            'juros': 3.6e-04
         }
     ]
 
@@ -64,7 +60,7 @@ def populate():
         with open('database/registros.json', 'w', encoding='utf-8') as registro:
             registro.write('[{}]')
      
-    for _ in range(15):
+    for _ in range(30):
         id = faker.random_int(min=1, max=10000000)
         data = gerar_data_aleatoria()
         tipo = random.choice(tipos)
@@ -72,7 +68,10 @@ def populate():
         valor = faker.unique.random_int()
         tipo_investimento = random.choice(tipos_investimento)
         
-        registro = criar_registro(id, codigo, tipo, valor, data, tipo_investimento)
+        if tipo == "saque":
+            registro = criar_registro(id, codigo, tipo, -valor, data, tipo_investimento)
+        else:
+            registro = criar_registro(id, codigo, tipo, valor, data, tipo_investimento)
         dados.append(registro)
     
     salvar_dados(dados)

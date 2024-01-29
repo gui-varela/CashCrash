@@ -17,7 +17,7 @@ textoMenu = '''
 ----------------------------------
            MENU PRINCIPAL
 ----------------------------------
-{}O que deseja fazer?
+Bem-vindo! O que deseja fazer?
 
 [1] - Consultar extrato
 [2] - Depositar
@@ -28,11 +28,10 @@ textoMenu = '''
 
 Sua escolha: '''
 
-def menuPrincipalController(isPrimeiroAcesso = True):
+def menuPrincipalController():
     while True:
-        entradaUsuario = input(textoMenu.format(
-            "Bem-vindo! " if isPrimeiroAcesso else "Olá!"
-        ))
+        entradaUsuario = input(textoMenu)
+
 
         if entradaUsuario == "6":
             despedidaController()
@@ -54,4 +53,4 @@ def menuPrincipalController(isPrimeiroAcesso = True):
             break
         else:
             print("\nESCOLHA INVÁLIDA.\nDigite um número de 1 a 6.\n")
-            sleep(3)
+            sleep(4)

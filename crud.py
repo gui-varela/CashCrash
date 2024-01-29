@@ -1,7 +1,8 @@
 import json
 import sys
 from datetime import datetime
-from populateBD import gerar_codigo
+
+from services.utils import gerar_codigo
 sys.path.append('services\editarOuCancelar\cancelamento')
 import services.editarOuCancelar.cancelamento.cancelarOperacao
 from faker import Faker
@@ -51,11 +52,14 @@ def criar_registro(valor, tipo):
     formato_data = "%Y-%m-%d %H:%M:%S"
     data = str(datetime.now().strftime(formato_data))
     if tipo == "deposito":
-        return {'id': id_ficticio,'codigo': f"d{cont}-{data[:10]}", 'tipo': tipo, 'valor': int(valor), 'data': data}
+        return {'id': id_ficticio,'codigo': f"d{cont}-{data[:10]}", 'tipo': tipo, 'valor': float(valor), 'data': data}
     if tipo == "saque":
-        return {'id': id_ficticio,'codigo': f"d{cont}-{data[:10]}", 'tipo': tipo, 'valor': int(valor), 'data': data}
+        if float(valor) < 0:
+            return {'id': id_ficticio,'codigo': f"d{cont}-{data[:10]}", 'tipo': tipo, 'valor': float(valor), 'data': data}
+        else:
+            return {'id': id_ficticio,'codigo': f"d{cont}-{data[:10]}", 'tipo': tipo, 'valor': -float(valor), 'data': data}
     
-def criarInvestimento(valor, tipo):
+def criarInvestimento(valor, titulo):
     dados = ler_dados()
     cont = ""
     for x in dados[-1]['codigo'][1:]:
@@ -67,15 +71,15 @@ def criarInvestimento(valor, tipo):
     id_ficticio = fake.random_int(min=1, max=10000000) # gera um id aleatório
     formato_data = "%Y-%m-%d %H:%M:%S"
     data = str(datetime.now().strftime(formato_data))
-    if tipo == "CDB":
+    if titulo == "CDB":
         return {'id': id_ficticio, 'tipo': 'investimento','codigo': f"i{cont}-{data[:10]}", \
-                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipoInvestimento': {"tipo": tipo, "juros": 0.000039}}
-    elif tipo == "LCI":
+                    'valor': float(valor), 'montante': float(valor), 'data': data, 'tipo_investimento': {"titulo": titulo, "juros": 0.00039}}
+    elif titulo == "LCI":
         return {'id': id_ficticio, 'tipo': 'investimento','codigo': f"i{cont}-{data[:10]}", \
-                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipoInvestimento': {"tipo": tipo, "juros": 0.000038}}
+                    'valor': float(valor), 'montante': float(valor), 'data': data, 'tipo_investimento': {"titulo": titulo, "juros": 0.00038}}
     else:
         return {'id': id_ficticio, 'tipo': 'investimento','codigo': f"i{cont}-{data[:10]}", \
-                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipoInvestimento': {"tipo": tipo, "juros": 0.000036}}
+                    'valor': float(valor), 'montante': float(valor), 'data': data, 'tipo_investimento': {"titulo": titulo, "juros": 0.00036}}
 
 def listar_registros():
     dados = ler_dados()
@@ -89,22 +93,21 @@ def listar_registros_por_tipo(tipo):
 
 def listar_registros_por_data_e_valor(dados, data_inicial, data_final, valor_inicial, valor_final):
     dados_filtrados = []
-    
-    
+    valorTotal = 0
     for dado in dados:
-        #print("aqui2", dado)
         data_formatada = datetime.strptime(dado["data"], '%Y-%m-%d %H:%M:%S')
 
-        data_valida = (not data_inicial or data_formatada >= data_inicial) and \
-                    (not data_final or data_formatada <= data_final)
+        data_valida = (not data_inicial or (data_formatada >= data_inicial if data_inicial != "" else True) ) and \
+                    (not data_final or (data_formatada <= data_final if data_final != "" else True))
         
-        valor_valido = (not valor_inicial or dado["valor"] >= valor_inicial) and \
-                    (not valor_final or dado["valor"] <= valor_final)
+        valor_valido = (not valor_inicial or (dado["valor"] >= valor_inicial if valor_inicial != "" else True)) and \
+                    (not valor_final or (dado["valor"] <= valor_final if valor_final != "" else True))
         
         if data_valida and valor_valido:
             dados_filtrados.append(dado)
+            valorTotal += dado["valor"]
 
-    return dados_filtrados
+    return dados_filtrados, valorTotal
 
 
 def adicionar_registro(tipo, valor):
@@ -141,15 +144,19 @@ def editar_registro(dados, id_change):
                         registro_edit['tipo_investimento'] = tipos_investimento[registro_edit_titulo-1]
                         break
                     except:
-                        print("Titulo invalido")                        
+                        print("Titulo invalido")
 
             registro_edit['tipo'] = registro_novo_tipo
 
             try:
-                registro_edit_valor = int(input("Insira o valor atualizado do registro.\nDeixe em branco para não alterar\n"))
-                registro_edit['valor'] = registro_edit_valor
+                registro_edit_valor = float(input("Insira o valor atualizado do registro.\nDeixe em branco para não alterar\n"))
             except:
-                print("Valor inalterado")                
+                registro_edit_valor = registro_edit['valor'] 
+            if (registro_novo_tipo == "saque" and (registro_edit_valor > 0 or None)) or (registro_novo_tipo != "saque" and registro_edit_valor < 0):
+                registro_edit['valor'] = -registro_edit_valor
+            else:
+                registro_edit['valor'] = registro_edit_valor      
+                         
             formato_data = "%Y-%m-%d %H:%M:%S"
             new_date = str(datetime.now().strftime(formato_data))
             registro_edit['data'] = new_date
@@ -181,16 +188,4 @@ A operação de ID {id_change} foi cancelada e não será realizada!
         else:
             print(f"Elemento com ID {id_change} não encontrado.")
         salvar_dados(dados)
-
-def ler_saldo():
-    dados = ler_dados()
-    saldo = 0
-
-    for dado in dados:
-        if dado['tipo'] == "deposito":
-            saldo += dado['valor']
-        elif dado['tipo'] == "saque":
-            saldo -= dado['valor']
-
-    return saldo
 

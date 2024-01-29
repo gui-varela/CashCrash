@@ -3,16 +3,18 @@ from crud import ler_dados, salvar_dados, criarInvestimento
     
 def adicionarInvestimento(valor, tipo):
     informacoes = '''
-    ----------------------------------
-        INVESTIMENTO REALIZADO!
-    ----------------------------------
-    O investimento de tipo {} foi realizado 
-    com sucesso, e pode ser acessado na consulta 
-    de investimentos nome menu (opção 4).
+----------------------------------
+      INVESTIMENTO REALIZADO!
+----------------------------------
+O investimento de tipo {} foi 
+realizado com sucesso, e pode ser 
+acessado na consulta de 
+investimentos no menu (opção 4).
 
     [1] - Investir novamente
     [2] - Menu Principal
 
+Sua escolha: 
     '''.format(tipo)
 
     dados = ler_dados()

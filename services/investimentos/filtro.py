@@ -20,9 +20,9 @@ def filtroInvestimentosController():
     print(informacoes)
     
     data_inicial, data_final = validarInputsDeData()
+    print("\n")
     valor_inicial, valor_final = validarInputsDeValor()
     
-
     dados_investimento = listar_registros_por_tipo("investimento")
     
     dados_filtrados = listar_registros_por_data_e_valor(
@@ -33,7 +33,7 @@ def filtroInvestimentosController():
         valor_final
     )
 
-    resultadoConsultaInvestimentoController(dados_filtrados)
+    resultadoConsultaInvestimentoController(dados_filtrados[0], dados_filtrados[1])
 
 
 def validarInputsDeData():
@@ -43,7 +43,7 @@ def validarInputsDeData():
         data_inicial = tratarInputData("Digite a data inicial: ")
         data_final = tratarInputData("Digite a data final: ")
 
-        if data_inicial != "" and data_final != "" and data_inicial > data_final:
+        if not data_inicial and not data_final and data_inicial > data_final:
             print("Data final deve ser posterior à data inicial. Insira as datas novamente.")
         else:
             datas_validas = True
@@ -70,6 +70,8 @@ def tratarInputData(mensagemInput):
     while True:
         try:
             data = input(mensagemInput)
+            if not data:
+                return ""
             data_formatada = datetime.strptime(data, "%d/%m/%Y")
             return data_formatada
         except:
@@ -79,8 +81,10 @@ def tratarInputData(mensagemInput):
 def tratarInputValor(mensagemInput):
     while True:
         try:
-            valor = float(input(mensagemInput).replace(",", "."))
-            return valor
+            valor = input(mensagemInput)
+            if not valor:
+                return ""
+            return float(valor.replace(",", "."))
         except:
             print("Digite um formato correto de valor. (Exemplo: 1000.00)")
 
