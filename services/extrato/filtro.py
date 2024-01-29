@@ -49,8 +49,8 @@ def tratarInputTipo(mensagem):
 def consultarExtrato():
     print(informacoes)
     # Solicitar entradas do usuário
-    data_inicial = tratarInputData("Data inicial (DD/MM/AAAA): ")
-    data_final = tratarInputData("Data final (DD/MM/AAAA): ")
+    data_inicial = tratarInputData("Data inicial (DD/MM/AAAA), ou deixe em branco: ")
+    data_final = tratarInputData("Data final (DD/MM/AAAA), ou deixe em branco: ")
     print("\n")
     valor_inicial = tratarInputValor("Valor inicial: ")
     valor_final = tratarInputValor("Valor final: ")
