@@ -16,7 +16,7 @@ investimentos no menu (opção 4).
 
 Sua escolha: 
     '''.format(tipo)
-
+    
     dados = ler_dados()
     novoInvestimento = criarInvestimento(valor, tipo)
     dados.append(novoInvestimento)
