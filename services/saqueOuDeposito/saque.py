@@ -14,7 +14,7 @@ def iniciarSaque():
     from services.menuPrincipal import menuPrincipalController
     entradaUsuario = input(textoMenu)
     while True:
-        if entradaUsuario.isnumeric():
+        if float(entradaUsuario.replace(',','.')):
             adicionar_registro("saque", entradaUsuario)
             sucessoOperacaoController("SAQUE", entradaUsuario)
             break

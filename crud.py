@@ -50,12 +50,12 @@ def criar_registro(valor, tipo):
     formato_data = "%Y-%m-%d %H:%M:%S"
     data = str(datetime.now().strftime(formato_data))
     if tipo == "deposito":
-        return {'id': id_ficticio,'codigo': f"d{cont}-{data[:10]}", 'tipo': tipo, 'valor': int(valor), 'data': data}
+        return {'id': id_ficticio,'codigo': f"d{cont}-{data[:10]}", 'tipo': tipo, 'valor': float(valor), 'data': data}
     if tipo == "saque":
-        if valor < 0:
-            return {'id': id_ficticio,'codigo': f"d{cont}-{data[:10]}", 'tipo': tipo, 'valor': int(valor), 'data': data}
+        if float(valor) < 0:
+            return {'id': id_ficticio,'codigo': f"d{cont}-{data[:10]}", 'tipo': tipo, 'valor': float(valor), 'data': data}
         else:
-            return {'id': id_ficticio,'codigo': f"d{cont}-{data[:10]}", 'tipo': tipo, 'valor': -int(valor), 'data': data}
+            return {'id': id_ficticio,'codigo': f"d{cont}-{data[:10]}", 'tipo': tipo, 'valor': -float(valor), 'data': data}
     
 def criarInvestimento(valor, titulo):
     dados = ler_dados()
@@ -71,13 +71,13 @@ def criarInvestimento(valor, titulo):
     data = str(datetime.now().strftime(formato_data))
     if titulo == "CDB":
         return {'id': id_ficticio, 'tipo': 'investimento','codigo': f"i{cont}-{data[:10]}", \
-                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipo_investimento': {"titulo": titulo, "juros": 0.00039}}
+                    'valor': float(valor), 'montante': float(valor), 'data': data, 'tipo_investimento': {"titulo": titulo, "juros": 0.00039}}
     elif titulo == "LCI":
         return {'id': id_ficticio, 'tipo': 'investimento','codigo': f"i{cont}-{data[:10]}", \
-                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipo_investimento': {"titulo": titulo, "juros": 0.00038}}
+                    'valor': float(valor), 'montante': float(valor), 'data': data, 'tipo_investimento': {"titulo": titulo, "juros": 0.00038}}
     else:
         return {'id': id_ficticio, 'tipo': 'investimento','codigo': f"i{cont}-{data[:10]}", \
-                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipo_investimento': {"titulo": titulo, "juros": 0.00036}}
+                    'valor': float(valor), 'montante': float(valor), 'data': data, 'tipo_investimento': {"titulo": titulo, "juros": 0.00036}}
 
 def listar_registros():
     dados = ler_dados()
@@ -141,7 +141,7 @@ def editar_registro(dados, id_change):
                         registro_edit['tipo_investimento'] = tipos_investimento[registro_edit_titulo-1]
                         break
                     except:
-                        print("Titulo invalido")                        
+                        print("Titulo invalido")
 
             registro_edit['tipo'] = registro_novo_tipo
 
@@ -149,7 +149,7 @@ def editar_registro(dados, id_change):
                 registro_edit_valor = int(input("Insira o valor atualizado do registro.\nDeixe em branco para não alterar\n"))
                 registro_edit['valor'] = registro_edit_valor
             except:
-                print("Valor inalterado")                
+                print("Valor inalterado")
             formato_data = "%Y-%m-%d %H:%M:%S"
             new_date = str(datetime.now().strftime(formato_data))
             registro_edit['data'] = new_date

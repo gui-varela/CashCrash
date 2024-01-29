@@ -9,10 +9,6 @@ from services.investimentos.menuInvestimentos import menuInvestimentosController
 sys.path.append('services\editarOuCancelar')
 #import opcoesMenu
 #from opcoesMenu import menuEditarOuCancelar
-<<<<<<< HEAD
-=======
-sys.path.append('services\editarOuCancelar')
->>>>>>> 0ed5591f05e7891031a55789df4e8962896c79b4
 from services.saqueOuDeposito.deposito import iniciarDeposito
 from services.saqueOuDeposito.saque import iniciarSaque
 
@@ -33,14 +29,7 @@ Sua escolha: '''
 
 def menuPrincipalController():
     while True:
-<<<<<<< HEAD
         entradaUsuario = input(textoMenu)
-=======
-        entradaUsuario = input(textoMenu.format(
-            "Bem-vindo! " if isPrimeiroAcesso else "Olá!"
-        ))
-
->>>>>>> 0ed5591f05e7891031a55789df4e8962896c79b4
         if entradaUsuario == "6":
             despedidaController()
             break
