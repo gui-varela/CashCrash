@@ -13,7 +13,7 @@ Insira o valor do depósito:  '''
 def iniciarDeposito():
     entradaUsuario = input(textoMenu)
     while True:
-        if float(entradaUsuario.replace(',','.')) > 0:
+        if entradaUsuario.isnumeric():
             adicionar_registro("deposito", entradaUsuario)
             sucessoOperacaoController("DEPOSITO", entradaUsuario)
             break

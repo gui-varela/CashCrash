@@ -6,6 +6,7 @@ sys.path.append('services\editarOuCancelar\cancelamento')
 import services.editarOuCancelar.cancelamento.cancelarOperacao
 from faker import Faker
 
+
 fake = Faker()
 dicionario_tipos = {'S':'saque', 'D': 'deposito', 'I': 'investimento', 's':'saque', 'd': 'deposito', 'i': 'investimento'}
 tipos_investimento = [
@@ -146,10 +147,14 @@ def editar_registro(dados, id_change):
             registro_edit['tipo'] = registro_novo_tipo
 
             try:
-                registro_edit_valor = int(input("Insira o valor atualizado do registro.\nDeixe em branco para não alterar\n"))
-                registro_edit['valor'] = registro_edit_valor
+                registro_edit_valor = float(input("Insira o valor atualizado do registro.\nDeixe em branco para não alterar\n"))
             except:
-                print("Valor inalterado")
+                registro_edit_valor = registro_edit['valor'] 
+            if (registro_novo_tipo == "saque" and (registro_edit_valor > 0 or None)) or (registro_novo_tipo != "saque" and registro_edit_valor < 0):
+                registro_edit['valor'] = -registro_edit_valor
+            else:
+                registro_edit['valor'] = registro_edit_valor      
+                         
             formato_data = "%Y-%m-%d %H:%M:%S"
             new_date = str(datetime.now().strftime(formato_data))
             registro_edit['data'] = new_date
