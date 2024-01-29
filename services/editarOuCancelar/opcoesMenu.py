@@ -17,22 +17,17 @@ textoOpcoes = '''
     EDITAR/CANCELAR OPERAÇÃO
 ----------------------------------
 Deseja editar ou cancelar? [E/C]
-Digite [1] para sair.
-Digite [2] para voltar ao menu principal
+Digite [1] para voltar ao menu principal
 '''
 def menuEditarOuCancelar():
   while True:
     editarOuCancelar = input(textoOpcoes)
-  
     if editarOuCancelar in ['1', 'um', 'Um', 'UM', '[1]']:
-      despedidaController()
-      break
-    elif editarOuCancelar in ['2', 'dois', 'DOIS','Dois','[2]','DOis']:
        import menuPrincipal
        menuPrincipal.menuPrincipalController(isPrimeiroAcesso = False)
        break
     elif editarOuCancelar in ['C', 'c']:
-        id_change = input("Insira o ID da operação a ser cancelada")
+        id_change = input("Insira o codigo da operação a ser cancelada: ")
         try:
             with open('database/registros.json', 'r') as arquivo:
                 dados = json.load(arquivo)
@@ -42,10 +37,9 @@ def menuEditarOuCancelar():
         deletar_registro(dados, id_change)
         with open('database/registros.json', 'w') as arquivo:
             json.dump(dados, arquivo, indent=2)
-        os.remove('registros.json')
-        break
+        #os.remove('registros.json')
     elif editarOuCancelar in ['E', 'e']:
-        id_change = input("Insira o ID da operação a ser editada")
+        id_change = input("Insira o codigo da operação a ser editada: ")
         try:
             with open('database/registros.json', 'r') as arquivo:
                 dados = json.load(arquivo)

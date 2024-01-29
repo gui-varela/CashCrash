@@ -1,10 +1,30 @@
 import json
 import sys
 from datetime import datetime
+from populateBD import gerar_codigo
 sys.path.append('services\editarOuCancelar\cancelamento')
+import services.editarOuCancelar.cancelamento.cancelarOperacao
+from faker import Faker
 
 
-tipo_edit = {'D':'Despesa', 'R': 'Receita', 'I': 'Investimento'}
+fake = Faker()
+dicionario_tipos = {'S':'saque', 'D': 'deposito', 'I': 'investimento', 's':'saque', 'd': 'deposito', 'i': 'investimento'}
+tipos_investimento = [
+        {
+            'titulo': "CDB",
+            'juros': 3.9e-05
+        },
+        {            
+            'titulo': "LCI",
+            'juros': 3.8e-05
+        },
+        {
+            'titulo': "LCA",
+            'juros': 3.6e-05
+        }
+    ]
+
+
 def ler_dados():
     try:
         with open('database/registros.json', 'r') as arquivo:
@@ -21,23 +41,71 @@ def salvar_dados(dados):
 def criar_registro(valor, tipo):
     dados = ler_dados()
     cont = ""
-    for x in dados[-1]['id'][1:]:
+    for x in dados[-1]['codigo'][1:]:
         if x != '-':
             cont = cont + x
         else:
             break
     cont = int(cont) + 1
+    id_ficticio = fake.random_int(min=1, max=10000000) # gera um id aleatório
     formato_data = "%Y-%m-%d %H:%M:%S"
     data = str(datetime.now().strftime(formato_data))
     if tipo == "deposito":
-        return {'id': f"d{cont}-{data[:11]}", 'tipo': tipo, 'valor': int(valor), 'data': data}
+        return {'id': id_ficticio,'codigo': f"d{cont}-{data[:10]}", 'tipo': tipo, 'valor': int(valor), 'data': data}
     if tipo == "saque":
-        return {'id': f"s{cont}-{data[:11]}", 'tipo': tipo, 'valor': int(valor), 'data': data}
+        return {'id': id_ficticio,'codigo': f"d{cont}-{data[:10]}", 'tipo': tipo, 'valor': int(valor), 'data': data}
+    
+def criarInvestimento(valor, tipo):
+    dados = ler_dados()
+    cont = ""
+    for x in dados[-1]['codigo'][1:]:
+        if x != '-':
+            cont = cont + x
+        else:
+            break
+    cont = int(cont) + 1
+    id_ficticio = fake.random_int(min=1, max=10000000) # gera um id aleatório
+    formato_data = "%Y-%m-%d %H:%M:%S"
+    data = str(datetime.now().strftime(formato_data))
+    if tipo == "CDB":
+        return {'id': id_ficticio, 'tipo': 'investimento','codigo': f"i{cont}-{data[:10]}", \
+                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipoInvestimento': {"tipo": tipo, "juros": 0.000039}}
+    elif tipo == "LCI":
+        return {'id': id_ficticio, 'tipo': 'investimento','codigo': f"i{cont}-{data[:10]}", \
+                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipoInvestimento': {"tipo": tipo, "juros": 0.000038}}
+    else:
+        return {'id': id_ficticio, 'tipo': 'investimento','codigo': f"i{cont}-{data[:10]}", \
+                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipoInvestimento': {"tipo": tipo, "juros": 0.000036}}
 
 def listar_registros():
     dados = ler_dados()
     for i, registro in enumerate(dados, 1):
         print({'id': {registro['id']}, 'tipo': {registro['tipo']}, 'valor': {registro['valor']}, 'data': {registro['data']}})
+
+def listar_registros_por_tipo(tipo):
+    dados = ler_dados()
+    dados_por_tipo = [ dado for dado in dados if dado['tipo'] == tipo ]
+    return dados_por_tipo
+
+def listar_registros_por_data_e_valor(dados, data_inicial, data_final, valor_inicial, valor_final):
+    dados_filtrados = []
+    
+    
+    for dado in dados:
+        #print("aqui2", dado)
+        data_formatada = datetime.strptime(dado["data"], '%Y-%m-%d %H:%M:%S')
+
+        data_valida = (not data_inicial or data_formatada >= data_inicial) and \
+                    (not data_final or data_formatada <= data_final)
+        
+        valor_valido = (not valor_inicial or dado["valor"] >= valor_inicial) and \
+                    (not valor_final or dado["valor"] <= valor_final)
+        
+        if data_valida and valor_valido:
+            dados_filtrados.append(dado)
+
+    return dados_filtrados
+
 
 def adicionar_registro(tipo, valor):
     dados = ler_dados()
@@ -50,26 +118,42 @@ def adicionar_registro(tipo, valor):
 def editar_registro(dados, id_change):
         index_change = None
         for i, item in enumerate(dados):
-            if item.get('id') == id_change:
+            if item.get('codigo') == id_change:
                 index_change = i
                 break
 
         if index_change is not None:
             registro_edit = dados[index_change]
             print (f"\nRegistro a ser editado: \n {registro_edit}\n")
-            registro_edit_tipo = input("Insira [D] para transformar em despesa, [R] para transformar em receita e [I] para transformar em investimento.\nDeixe em branco para não alterar tipo\n")
-            if registro_edit_tipo in tipo_edit:
-                registro_edit['tipo'] = tipo_edit[registro_edit_tipo]
-            if registro_edit['tipo'] == "Investimento":
-                registro_edit_titulo = input("Insira o titulo atualizado:\n[1] - CDB (0,039%/dia)\n[2] - LCI (0,038%/dia)\n[3] - LCA (0,036%/dia)\n")
+            registro_novo_tipo = input("Insira [S] para transformar em saque, [D] para transformar em deposito e [I] para transformar em investimento.\nDeixe em branco para não alterar tipo\n")
+            
+            if registro_novo_tipo in dicionario_tipos:
+                registro_novo_tipo = dicionario_tipos[registro_novo_tipo]
+            else:
+                registro_novo_tipo = registro_edit['tipo']
+
+            if registro_edit['tipo'] == "investimento":
+                del registro_edit['tipo_investimento']
+            if registro_novo_tipo == "investimento":
+                while True:
+                    try:
+                        registro_edit_titulo = int(input("Insira o titulo atualizado:\n[1] - CDB (0,039%/dia)\n[2] - LCI (0,038%/dia)\n[3] - LCA (0,036%/dia)\n" ))
+                        registro_edit['tipo_investimento'] = tipos_investimento[registro_edit_titulo-1]
+                        break
+                    except:
+                        print("Titulo invalido")                        
+
+            registro_edit['tipo'] = registro_novo_tipo
+
             try:
                 registro_edit_valor = int(input("Insira o valor atualizado do registro.\nDeixe em branco para não alterar\n"))
-            except:
-                print("Valor invalido!")
-            if isinstance(registro_edit_valor, int):
                 registro_edit['valor'] = registro_edit_valor
-            new_date = str(datetime.now())
+            except:
+                print("Valor inalterado")                
+            formato_data = "%Y-%m-%d %H:%M:%S"
+            new_date = str(datetime.now().strftime(formato_data))
             registro_edit['data'] = new_date
+            registro_edit['codigo'] = gerar_codigo(dados, registro_novo_tipo, new_date)
             dados[index_change] = registro_edit
             salvar_dados(dados)
             print(f"""----------------------------------
@@ -77,14 +161,12 @@ def editar_registro(dados, id_change):
 ----------------------------------
 A operação de id {id} foi editada com sucesso! Resultado após a edição:
 
-Tipo: {tipo_edit[registro_edit_tipo]}
-Valor: {registro_edit_valor}
-Data: {new_date}""")
+{dados[index_change]}""")
 
 def deletar_registro(dados, id_change):
         index_change = None
         for i, item in enumerate(dados):
-            if item.get('id') == id_change:
+            if item.get('codigo') == id_change:
                 index_change = i
                 break
         # If the element is found, delete it
