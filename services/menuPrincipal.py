@@ -9,6 +9,9 @@ sys.path.append('c:/Users/netoo/OneDrive/Área de Trabalho/projetoCC/CashCrash/s
 from services.editarOuCancelar.opcoesMenu import menuEditarOuCancelar
 from services.extrato.filtro import consultarExtrato
 from services.investimentos.menuInvestimentos import menuInvestimentosController
+sys.path.append('services\editarOuCancelar')
+#import opcoesMenu
+#from opcoesMenu import menuEditarOuCancelar
 from services.saqueOuDeposito.deposito import iniciarDeposito
 from services.saqueOuDeposito.saque import iniciarSaque
 
@@ -29,11 +32,7 @@ Sua escolha: '''
 
 def menuPrincipalController():
     while True:
-        entradaUsuario = input(textoMenu.format(
-            "Bem-vindo! " if input("Já é o seu primeiro acesso? (S/N): ").upper() == "S" else "Olá!"
-        ))
-
-        print(f"Você escolheu: {entradaUsuario}")  # Adicionado para debug
+        entradaUsuario = input(textoMenu)
         if entradaUsuario == "6":
             print("Chamando despedidaController")  # Adicionado para debug
             despedidaController()

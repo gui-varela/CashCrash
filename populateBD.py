@@ -72,7 +72,10 @@ def populate():
         valor = faker.unique.random_int()
         tipo_investimento = random.choice(tipos_investimento)
         
-        registro = criar_registro(id, codigo, tipo, valor, data, tipo_investimento)
+        if tipo == "saque":
+            registro = criar_registro(id, codigo, tipo, -valor, data, tipo_investimento)
+        else:
+            registro = criar_registro(id, codigo, tipo, valor, data, tipo_investimento)
         dados.append(registro)
     
     salvar_dados(dados)
