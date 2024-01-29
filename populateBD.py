@@ -6,6 +6,8 @@ import random
 from datetime import datetime, date, time
 import functools
 
+from services.utils import gerar_codigo
+
 faker = Faker()
 formato_data = "%Y-%m-%d %H:%M:%S"
 
@@ -33,12 +35,6 @@ def gerar_data_aleatoria():
     formato_data = "%Y-%m-%d %H:%M:%S"
     data_formatada = str(data.strftime(formato_data))
     return data_formatada
-
-def gerar_codigo(dados, tipo, data):
-    dados_por_tipo = [ dado for dado in dados if dado['tipo'] == tipo ]
-    cont_dados_por_tipo = len(dados_por_tipo)+1
-    codigo = f"{tipo[0]}{cont_dados_por_tipo}-{data[:10]}"
-    return codigo
 
 
 def populate():

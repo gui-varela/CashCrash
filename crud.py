@@ -1,7 +1,8 @@
 import json
 import sys
 from datetime import datetime
-from populateBD import gerar_codigo
+
+from services.utils import gerar_codigo
 sys.path.append('services\editarOuCancelar\cancelamento')
 import services.editarOuCancelar.cancelamento.cancelarOperacao
 from faker import Faker
