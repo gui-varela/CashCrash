@@ -23,7 +23,11 @@ textoBuscaSemResultados = '''
 ----------------------------------
 '''
 
-def resultadoConsultaController(operacoes, valorTotal):
+def resultadoConsultaController(operacoes):
+    valorTotal = 0
+    for operação in operacoes:
+        valorTotal += operação["valor"]
+    print("adfasdasda", valorTotal)
     if len(operacoes) == 0:
       print(textoBuscaSemResultados)
     else:
