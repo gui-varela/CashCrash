@@ -37,7 +37,7 @@ def criar_registro(valor, tipo):
     if tipo == "saque":
         return {'id': id_ficticio,'codigo': f"d{cont}-{data[:10]}", 'tipo': tipo, 'valor': int(valor), 'data': data}
     
-def criarInvestimento(valor, tipo):
+def criarInvestimento(valor, titulo):
     dados = ler_dados()
     cont = ""
     for x in dados[-1]['codigo'][1:]:
@@ -49,15 +49,15 @@ def criarInvestimento(valor, tipo):
     id_ficticio = fake.random_int(min=1, max=10000000) # gera um id aleatório
     formato_data = "%Y-%m-%d %H:%M:%S"
     data = str(datetime.now().strftime(formato_data))
-    if tipo == "CDB":
+    if titulo == "CDB":
         return {'id': id_ficticio, 'tipo': 'investimento','codigo': f"i{cont}-{data[:10]}", \
-                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipoInvestimento': {"tipo": tipo, "juros": 0.00039}}
-    elif tipo == "LCI":
+                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipo_investimento': {"titulo": titulo, "juros": 0.00039}}
+    elif titulo == "LCI":
         return {'id': id_ficticio, 'tipo': 'investimento','codigo': f"i{cont}-{data[:10]}", \
-                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipoInvestimento': {"tipo": tipo, "juros": 0.00038}}
+                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipo_investimento': {"titulo": titulo, "juros": 0.00038}}
     else:
         return {'id': id_ficticio, 'tipo': 'investimento','codigo': f"i{cont}-{data[:10]}", \
-                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipoInvestimento': {"tipo": tipo, "juros": 0.00036}}
+                    'valor': int(valor), 'montante': float(valor), 'data': data, 'tipo_investimento': {"titulo": titulo, "juros": 0.00036}}
 
 def listar_registros():
     dados = ler_dados()
@@ -72,16 +72,14 @@ def listar_registros_por_tipo(tipo):
 def listar_registros_por_data_e_valor(dados, data_inicial, data_final, valor_inicial, valor_final):
     dados_filtrados = []
     
-    
     for dado in dados:
-        #print("aqui2", dado)
         data_formatada = datetime.strptime(dado["data"], '%Y-%m-%d %H:%M:%S')
 
-        data_valida = (not data_inicial or data_formatada >= data_inicial) and \
-                    (not data_final or data_formatada <= data_final)
+        data_valida = (not data_inicial or (data_formatada >= data_inicial if data_inicial != "" else True) ) and \
+                    (not data_final or (data_formatada <= data_final if data_final != "" else True))
         
-        valor_valido = (not valor_inicial or dado["valor"] >= valor_inicial) and \
-                    (not valor_final or dado["valor"] <= valor_final)
+        valor_valido = (not valor_inicial or (dado["valor"] >= valor_inicial if valor_inicial != "" else True)) and \
+                    (not valor_final or (dado["valor"] <= valor_final if valor_final != "" else True))
         
         if data_valida and valor_valido:
             dados_filtrados.append(dado)
