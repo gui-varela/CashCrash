@@ -49,7 +49,7 @@ def formatar_operacao(operacao):
 def exibir_operacoes(operacoes, valorTotal):
     for operacao in operacoes:
         print(formatar_operacao(operacao))
-    print("Valor total: R$", valorTotal)
+    print("Valor total: R$", float(valorTotal))
 
 def exibirMenuAposConsulta():
     while True:     
