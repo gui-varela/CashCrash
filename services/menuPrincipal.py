@@ -1,18 +1,14 @@
 import sys
 import os
 from time import sleep
-
 from services.despedida import despedidaController
+
+sys.path.append('c:/Users/netoo/OneDrive/Área de Trabalho/projetoCC/CashCrash')
+sys.path.append('c:/Users/netoo/OneDrive/Área de Trabalho/projetoCC/CashCrash/services/editarOuCancelar')
+
 from services.editarOuCancelar.opcoesMenu import menuEditarOuCancelar
 from services.extrato.filtro import consultarExtrato
 from services.investimentos.menuInvestimentos import menuInvestimentosController
-sys.path.append('services\editarOuCancelar')
-#import opcoesMenu
-#from opcoesMenu import menuEditarOuCancelar
-<<<<<<< HEAD
-=======
-sys.path.append('services\editarOuCancelar')
->>>>>>> 0ed5591f05e7891031a55789df4e8962896c79b4
 from services.saqueOuDeposito.deposito import iniciarDeposito
 from services.saqueOuDeposito.saque import iniciarSaque
 
@@ -33,32 +29,38 @@ Sua escolha: '''
 
 def menuPrincipalController():
     while True:
-<<<<<<< HEAD
-        entradaUsuario = input(textoMenu)
-=======
         entradaUsuario = input(textoMenu.format(
-            "Bem-vindo! " if isPrimeiroAcesso else "Olá!"
+            "Bem-vindo! " if input("Já é o seu primeiro acesso? (S/N): ").upper() == "S" else "Olá!"
         ))
 
->>>>>>> 0ed5591f05e7891031a55789df4e8962896c79b4
+        print(f"Você escolheu: {entradaUsuario}")  # Adicionado para debug
         if entradaUsuario == "6":
+            print("Chamando despedidaController")  # Adicionado para debug
             despedidaController()
             break
         elif entradaUsuario == "1":
+            print("Chamando consultarExtrato")  # Adicionado para debug
             consultarExtrato()
             break
         elif entradaUsuario == "2":
+            print("Chamando iniciarDeposito")  # Adicionado para debug
             iniciarDeposito()
             break
         elif entradaUsuario == "3":
+            print("Chamando iniciarSaque")  # Adicionado para debug
             iniciarSaque()
             break
         elif entradaUsuario == "4":
+            print("Chamando menuInvestimentosController")  # Adicionado para debug
             menuInvestimentosController()
             break
         elif entradaUsuario == "5":
+            print("Chamando menuEditarOuCancelar")  # Adicionado para debug
             menuEditarOuCancelar()
             break
         else:
             print("\nESCOLHA INVÁLIDA.\nDigite um número de 1 a 6.\n")
             sleep(4)
+
+if __name__ == "__main__":
+    menuPrincipalController()

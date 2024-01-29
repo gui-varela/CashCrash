@@ -80,3 +80,4 @@ def consultarExtrato():
                 dados_filtrados.append(dado)
 
     resultadoConsultaController(dados_filtrados)
+
