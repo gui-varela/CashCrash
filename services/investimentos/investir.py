@@ -19,7 +19,13 @@ Escolha um titulo para investir: '''
 
 def InvestimentoMenuControler():
     while True:
-        valorInvestido = input(textoMenu)
+        while True:
+            valorInvestido = input(textoMenu)
+            try:
+                float(valorInvestido)
+                break
+            except:
+                print("\n\nNão pode investir um valor vazio.\n")
         entrada_usuario = input(escolhaInvestimento)
         if entrada_usuario == "1":
             tipo = "CDB"
