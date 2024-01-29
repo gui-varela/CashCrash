@@ -9,6 +9,7 @@ from services.investimentos.menuInvestimentos import menuInvestimentosController
 sys.path.append('services\editarOuCancelar')
 #import opcoesMenu
 #from opcoesMenu import menuEditarOuCancelar
+sys.path.append('services\editarOuCancelar')
 from services.saqueOuDeposito.deposito import iniciarDeposito
 from services.saqueOuDeposito.saque import iniciarSaque
 
@@ -16,7 +17,7 @@ textoMenu = '''
 ----------------------------------
            MENU PRINCIPAL
 ----------------------------------
-Bem-vindo! O que deseja fazer?
+{}O que deseja fazer?
 
 [1] - Consultar extrato
 [2] - Depositar
@@ -27,9 +28,12 @@ Bem-vindo! O que deseja fazer?
 
 Sua escolha: '''
 
-def menuPrincipalController():
+def menuPrincipalController(isPrimeiroAcesso = True):
     while True:
-        entradaUsuario = input(textoMenu)
+        entradaUsuario = input(textoMenu.format(
+            "Bem-vindo! " if isPrimeiroAcesso else "Olá!"
+        ))
+
         if entradaUsuario == "6":
             despedidaController()
             break
@@ -50,4 +54,4 @@ def menuPrincipalController():
             break
         else:
             print("\nESCOLHA INVÁLIDA.\nDigite um número de 1 a 6.\n")
-            sleep(4)
+            sleep(3)
