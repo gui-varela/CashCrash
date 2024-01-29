@@ -4,6 +4,7 @@ from time import sleep
 
 from services.despedida import despedidaController
 from services.editarOuCancelar.opcoesMenu import menuEditarOuCancelar
+from services.exportarRelatorio.exportar import exportar_relatorio
 from services.extrato.filtro import consultarExtrato
 from services.investimentos.menuInvestimentos import menuInvestimentosController
 sys.path.append('services\editarOuCancelar')
@@ -24,7 +25,8 @@ Bem-vindo! O que deseja fazer?
 [3] - Sacar
 [4] - Acessar investimentos
 [5] - Editar/Cancelar operação
-[6] - Sair
+[6] - Exportar relatório
+[7] - Sair
 
 Sua escolha: '''
 
@@ -33,7 +35,7 @@ def menuPrincipalController():
         entradaUsuario = input(textoMenu)
 
 
-        if entradaUsuario == "6":
+        if entradaUsuario == "7":
             despedidaController()
             break
         elif entradaUsuario == "1":
@@ -50,6 +52,10 @@ def menuPrincipalController():
             break
         elif entradaUsuario == "5":
             menuEditarOuCancelar()
+            break
+        elif entradaUsuario == "6":
+            caminho_database = "database/registros.json"
+            exportar_relatorio(caminho_database)
             break
         else:
             print("\nESCOLHA INVÁLIDA.\nDigite um número de 1 a 6.\n")

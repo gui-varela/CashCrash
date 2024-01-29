@@ -8,6 +8,3 @@ def exportar_relatorio(caminho_database):
     shutil.copy(caminho_database, caminho_destino)
     print(f"Relatório exportado para: {caminho_destino}")
 
-caminho_database = "database/registros.json"
-
-exportar_relatorio(caminho_database)
