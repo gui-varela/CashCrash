@@ -63,6 +63,7 @@ def consultarExtrato():
 
     # Filtrar dados com base nas informações fornecidas pelo usuário
     dados_filtrados = []
+    valorTotal = 0
     for dado in dados_json:
         data_formatada = datetime.strptime(dado["data"], "%Y-%m-%d %H:%M:%S")
 
@@ -78,5 +79,6 @@ def consultarExtrato():
                 dados_filtrados.append(dado)
             elif tipo_filtro.lower() == "" and dado['tipo'] != 'investimento':
                 dados_filtrados.append(dado)
+        valorTotal += dado["valor"]
 
-    resultadoConsultaController(dados_filtrados)
+    resultadoConsultaController(dados_filtrados, valorTotal)

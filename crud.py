@@ -92,7 +92,7 @@ def listar_registros_por_tipo(tipo):
 
 def listar_registros_por_data_e_valor(dados, data_inicial, data_final, valor_inicial, valor_final):
     dados_filtrados = []
-    
+    valorTotal = 0
     for dado in dados:
         data_formatada = datetime.strptime(dado["data"], '%Y-%m-%d %H:%M:%S')
 
@@ -104,8 +104,9 @@ def listar_registros_por_data_e_valor(dados, data_inicial, data_final, valor_ini
         
         if data_valida and valor_valido:
             dados_filtrados.append(dado)
+            valorTotal += dado["valor"]
 
-    return dados_filtrados
+    return dados_filtrados, valorTotal
 
 
 def adicionar_registro(tipo, valor):
