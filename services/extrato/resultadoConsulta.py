@@ -1,14 +1,65 @@
-textoMenu = '''
-----------------------------------
-           MENU PRINCIPAL
-----------------------------------
-Bem-vindo! O que deseja fazer?
+from datetime import datetime
 
-[1] - Consultar extrato
-[2] - Depositar
-[3] - Sacar
-[4] - Acessar investimentos
-[5] - Editar/Cancelar operação
-[6] - Sair
+
+textoResultado = '''
+----------------------------------
+        RESULTADO DA BUSCA
+----------------------------------
 '''
 
+textoFim = '''
+----------------------------------
+              FIM
+----------------------------------
+'''
+
+textoBuscaSemResultados = '''
+----------------------------------
+    A busca não retornou
+    resultados.
+
+    Tente tornar sua busca mais
+    abrangente.
+----------------------------------
+'''
+
+def resultadoConsultaController(operacoes):
+    if len(operacoes) == 0:
+      print(textoBuscaSemResultados)
+    else:
+      print(textoResultado)
+      exibir_operacoes(operacoes)
+      print(textoFim)
+
+    exibirMenuAposConsulta()
+
+def formatar_operacao(operacao):
+    data_formatada = datetime.strptime(operacao['data'],'%Y-%m-%d %H:%M:%S')
+
+    return f"""
+==========  {data_formatada.strftime('%d/%m/%Y')}  ==========
+
+    {int((26-len(operacao['tipo']))/2)*" "}{operacao['tipo'].upper()}
+    --------------------------
+        Valor: R$ {format(operacao['valor'], ".2f")}
+        ID: {operacao['id']}
+    """
+
+    
+def exibir_operacoes(operacoes):
+    for operacao in operacoes:
+        print(formatar_operacao(operacao))
+
+def exibirMenuAposConsulta():
+    while True:     
+        entrada_usuario = input("\nDeseja Fazer outra consulta?\n\n  [1] Fazer outra consulta\n  [2] Voltar para o menu principal\n\nSua escolha: ")
+        if entrada_usuario == '1':
+            from services.extrato.filtro import consultarExtrato
+            consultarExtrato()
+            break
+        elif entrada_usuario == '2':
+            from services.menuPrincipal import menuPrincipalController
+            menuPrincipalController()
+            break
+        else:
+            print('\n\nValor inválido. Escreva um numero.\n\n')

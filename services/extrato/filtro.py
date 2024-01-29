@@ -1,9 +1,11 @@
 import json
 from datetime import datetime
 
+from services.extrato.resultadoConsulta import resultadoConsultaController
+
 informacoes = '''
 ----------------------------------
-           FILTRO - EXTRATO
+         FILTRO - EXTRATO
 ----------------------------------
 DICAS DE CONSULTA:
 
@@ -17,18 +19,22 @@ def tratarInputData(mensagem):
      while True:
         try:
             data = input(mensagem)
-            datetime.strptime(data, "%d/%m/%Y")
-            return data
+            if not data:
+                return ""
+            data_formatada = datetime.strptime(data, "%d/%m/%Y")
+            return data_formatada
         except:
-            print("Favor escreva uma data no formato (DD/MM/AAAA).")
+            print("Por favor, escreva uma data no formato DD/MM/AAAA.")
 
 def tratarInputValor(mensagem):
     while True:
         try:
-            valor = float(input(mensagem).replace(',','.'))
-            return valor
+            valor = input(mensagem)
+            if not valor:
+                return ""
+            return float(valor.replace(',','.'))
         except:
-            print("Favor escreva um numero no formato XXXX.XX")
+            print("Por favor, escreva um numero no formato XXXX.XX")
 
 def tratarInputTipo(mensagem):
     while True:
@@ -45,47 +51,32 @@ def consultarExtrato():
     # Solicitar entradas do usuário
     data_inicial = tratarInputData("Data inicial (DD/MM/AAAA): ")
     data_final = tratarInputData("Data final (DD/MM/AAAA): ")
+    print("\n")
     valor_inicial = tratarInputValor("Valor inicial: ")
     valor_final = tratarInputValor("Valor final: ")
-    tipo_filtro = tratarInputTipo('''Filtrar por Deposito [D]\nFiltrar por Saque [S]\n\nNão filtrar por tipo.[Em branco]\n''')
+    print("\n")
+    tipo_filtro = tratarInputTipo('''Filtrar por deposito [D] ou saque [S]\n(Deixe em branco para qualquer)\n\nSua escolha: ''')
     
     # Lendo os dados do arquivo JSON
     with open('database/registros.json', 'r') as arquivo:
         dados_json = json.load(arquivo)
 
-    # Converter as datas de string para objeto datetime
-    for dado in dados_json:
-        dado["data"] = datetime.strptime(dado["data"], "%Y-%m-%d %H:%M:%S")
-
     # Filtrar dados com base nas informações fornecidas pelo usuário
     dados_filtrados = []
     for dado in dados_json:
-        data_valida = (not data_inicial or dado["data"] >= datetime.strptime(data_inicial, "%d/%m/%Y")) and \
-                    (not data_final or dado["data"] <= datetime.strptime(data_final, "%d/%m/%Y"))
-        valor_valido = (not valor_inicial or dado["valor"] >= valor_inicial) and \
-                    (not valor_final or dado["valor"] <= valor_final)
+        data_formatada = datetime.strptime(dado["data"], "%Y-%m-%d %H:%M:%S")
+
+        data_valida = (not data_inicial or (data_formatada >= data_inicial if data_inicial != "" else True)) and \
+                    (not data_final or (data_formatada <= data_final  if data_final != "" else True))
+        valor_valido = (not valor_inicial or dado["valor"] >= valor_inicial if valor_inicial != "" else True) and \
+                    (not valor_final or (dado["valor"] <= valor_final if valor_final != "" else True))
 
         if data_valida and valor_valido:
             if tipo_filtro.lower() == "d" and dado["tipo"] == "deposito":
                 dados_filtrados.append(dado)
             elif tipo_filtro.lower() == "s" and dado["tipo"] == "saque":
                 dados_filtrados.append(dado)
-            elif tipo_filtro.lower() == "":
+            elif tipo_filtro.lower() == "" and dado['tipo'] != 'investimento':
                 dados_filtrados.append(dado)
 
-    # Imprimir os dados filtrados
-    for dado in dados_filtrados:
-        print(f"ID: {dado['id']}, Tipo: {dado['tipo']}, Valor: {dado['valor']}, Data: {dado['data']}")
-    respostaUser = input("Deseja Fazer outra consulta?\n\nEscreva [1] para fazer outra consulta\nEscreva [2] para voltar para o menu principal\n\n")
-    while True:
-        if respostaUser == '1':
-            consultarExtrato()
-            break
-        elif respostaUser == '2':
-            from services.menuPrincipal import menuPrincipalController
-            menuPrincipalController()
-            break
-        else:
-            print('\n\nvalor inválido. Escreva um numero.\n\n')
-            respostaUser = input("\n\nDeseja Fazer outra consulta?\n\nEscreva [1] para fazer outra consulta\nEscreva [2] para voltar para o menu principal\n\n")
-
+    resultadoConsultaController(dados_filtrados)

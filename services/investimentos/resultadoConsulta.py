@@ -16,14 +16,26 @@ textoFim = '''
 ----------------------------------
 '''
 
+textoBuscaSemResultados = '''
+----------------------------------
+    A busca não retornou
+    resultados.
+
+    Tente tornar sua busca mais
+    abrangente.
+----------------------------------
+'''
+
 def resultadoConsultaInvestimentoController(investimentos):
-  print(textoResultado)
-  exibir_investimentos(investimentos)
-  print(textoFim)
-      
-  entrada_usuario = input("Deseja Fazer outra consulta?\n\nEscreva [1] para fazer outra consulta\nEscreva [2] para voltar para o menu principal\n\n")
- 
-  exibirMenuAposConsulta(entrada_usuario)
+    if len(investimentos) == 0:
+      print(textoBuscaSemResultados)
+    else:
+        print(textoResultado)
+        exibir_investimentos(investimentos)
+        print(textoFim)
+
+    entrada_usuario = input("\n\nDeseja Fazer outra consulta?\n\nEscreva [1] para fazer outra consulta\nEscreva [2] para voltar para o menu principal\n\n")
+    exibirMenuAposConsulta(entrada_usuario)
   
 
 def formatar_investimento(investimento):
@@ -35,12 +47,12 @@ def formatar_investimento(investimento):
     return f"""
 ==========  {data_formatada.strftime('%d/%m/%Y')}  ==========
 
-        Título: {investimento['tipo_investimento']['titulo']}
+    Título: {investimento['tipo_investimento']['titulo']}
 
-        Valor: R$ {format(investimento['valor'], ".2f")}
-        Montante: R$ {format(montante, ".2f")} 
-        
-        ID: {investimento['id']}
+    Valor: R$ {format(investimento['valor'], ".2f")}
+    Montante: R$ {format(montante, ".2f")} 
+    
+    ID: {investimento['id']}
     """
 
     
@@ -60,5 +72,6 @@ def exibirMenuAposConsulta(entrada_usuario):
           menuPrincipalController()
           break
       else:
-          print('\n\nValor inválido. Escreva um numero.\n\n')
-          entrada_usuario = input("\n\nDeseja Fazer outra consulta?\n\nEscreva [1] para fazer outra consulta\nEscreva [2] para voltar para o menu principal\n\n")
+          print('\n\nValor inválido. Escreva um número.\n\n')
+          entrada_usuario = "\nEscreva [1] para fazer outra consulta\nEscreva [2] para voltar para o menu principal\n\nSua escolha: "
+          

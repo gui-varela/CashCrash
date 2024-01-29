@@ -37,7 +37,6 @@ def menuEditarOuCancelar():
         with open('database/registros.json', 'w') as arquivo:
             json.dump(dados, arquivo, indent=2)
         #os.remove('registros.json')
-        break
     elif editarOuCancelar in ['E', 'e']:
         id_change = input("Insira o codigo da operação a ser editada: ")
         try:
