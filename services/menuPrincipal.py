@@ -1,17 +1,13 @@
 import sys
 import os
 from time import sleep
-from services.despedida import despedidaController
 
 sys.path.append('c:/Users/netoo/OneDrive/Área de Trabalho/projetoCC/CashCrash')
 sys.path.append('c:/Users/netoo/OneDrive/Área de Trabalho/projetoCC/CashCrash/services/editarOuCancelar')
-
+from services.despedida import despedidaController
 from services.editarOuCancelar.opcoesMenu import menuEditarOuCancelar
 from services.extrato.filtro import consultarExtrato
 from services.investimentos.menuInvestimentos import menuInvestimentosController
-sys.path.append('services\editarOuCancelar')
-#import opcoesMenu
-#from opcoesMenu import menuEditarOuCancelar
 from services.saqueOuDeposito.deposito import iniciarDeposito
 from services.saqueOuDeposito.saque import iniciarSaque
 
@@ -33,8 +29,9 @@ Sua escolha: '''
 def menuPrincipalController():
     while True:
         entradaUsuario = input(textoMenu)
+
+        print(f"Você escolheu: {entradaUsuario}")  # Adicionado para debug
         if entradaUsuario == "6":
-            print("Chamando despedidaController")  # Adicionado para debug
             despedidaController()
             break
         elif entradaUsuario == "1":
