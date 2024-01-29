@@ -1,7 +1,6 @@
 import sys
 import os
 from time import sleep
-
 sys.path.append('c:/Users/netoo/OneDrive/Área de Trabalho/projetoCC/CashCrash')
 sys.path.append('c:/Users/netoo/OneDrive/Área de Trabalho/projetoCC/CashCrash/services/editarOuCancelar')
 from services.despedida import despedidaController
