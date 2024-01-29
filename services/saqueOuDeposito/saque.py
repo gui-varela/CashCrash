@@ -22,5 +22,5 @@ def iniciarSaque():
             menuPrincipalController()
         else:
             print('\n\nvalor inválido. Escreva um numero.\n\n')
-            textoDeFalha = '''Escreva 'voltar' para voltar para o menu principal.\n\nInsira o valor do deposito:  '''
+            textoDeFalha = '''Escreva 'voltar' para voltar para o menu principal.\n\nInsira o valor do saque:  '''
             entradaUsuario = input(textoDeFalha)
