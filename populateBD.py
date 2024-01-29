@@ -65,7 +65,7 @@ def populate():
         with open('database/registros.json', 'w', encoding='utf-8') as registro:
             registro.write('[{}]')
      
-    for _ in range(15):
+    for _ in range(30):
         id = faker.random_int(min=1, max=10000000)
         data = gerar_data_aleatoria()
         tipo = random.choice(tipos)
