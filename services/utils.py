@@ -24,8 +24,7 @@ def gerar_codigo(dados, tipo, data):
     return codigo
 
 
-def exportar_relatorio(dados):
-    nome_relatorio = "relatorio.json"
+def exportar_relatorio(dados, nome_relatorio):
     caminho_destino = os.path.join(os.path.expanduser("~"), "Downloads", nome_relatorio)
     with open(f'{caminho_destino}', 'w', encoding='utf-8') as arquivo:
         json.dump(dados, arquivo, indent=2, ensure_ascii=False)

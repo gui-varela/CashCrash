@@ -35,8 +35,9 @@ def resultadoConsultaInvestimentoController(investimentos, valor):
         print("Valor Total Investido: R$",float(valor))
         print(textoFim)
         escolhaExportar = input("Deseja exportar o relatório? (s/n)\n Sua escolha: ")
+        dataString = datetime.now().strftime('%d-%m-%Y_%I:%M%p')
         if escolhaExportar.lower() == "s":
-            exportar_relatorio(investimentos)
+            exportar_relatorio(investimentos, f"investimentos_{dataString}")
 
     entrada_usuario = input("\n\nDeseja Fazer outra consulta?\n\nEscreva [1] para fazer outra consulta\nEscreva [2] para voltar para o menu principal\n\n")
     exibirMenuAposConsulta(entrada_usuario)

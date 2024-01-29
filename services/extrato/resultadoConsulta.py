@@ -36,8 +36,9 @@ def resultadoConsultaController(operacoes):
       exibir_operacoes(operacoes, valorTotal)
       print(textoFim)
       escolhaExportar = input("Deseja exportar o relatório? (s/n)\n Sua escolha: ")
+      dataString = datetime.now().strftime('%d-%m-%Y_%I:%M%p')
       if escolhaExportar.lower() == "s":
-        exportar_relatorio(operacoes)
+        exportar_relatorio(operacoes, f"extrato_{dataString}")
 
     exibirMenuAposConsulta()
 
