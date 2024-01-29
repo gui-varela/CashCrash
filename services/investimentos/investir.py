@@ -16,10 +16,19 @@ escolhaInvestimento = '''
 
 Escolha um titulo para investir: '''
 
+def validaValorInvestido():
+    while True:
+        try:
+            valor = input(textoMenu)
+            float(valor.replace(",", "."))
+            return valor
+        except:
+            print("\nEscreva um numero válido.")
+            sleep(3)
 
 def InvestimentoMenuControler():
     while True:
-        valorInvestido = input(textoMenu)
+        valorInvestido = validaValorInvestido()
         entrada_usuario = input(escolhaInvestimento)
         if entrada_usuario == "1":
             tipo = "CDB"

@@ -53,7 +53,10 @@ def criar_registro(valor, tipo):
     if tipo == "deposito":
         return {'id': id_ficticio,'codigo': f"d{cont}-{data[:10]}", 'tipo': tipo, 'valor': int(valor), 'data': data}
     if tipo == "saque":
-        return {'id': id_ficticio,'codigo': f"d{cont}-{data[:10]}", 'tipo': tipo, 'valor': int(valor), 'data': data}
+        if valor < 0:
+            return {'id': id_ficticio,'codigo': f"d{cont}-{data[:10]}", 'tipo': tipo, 'valor': int(valor), 'data': data}
+        else:
+            return {'id': id_ficticio,'codigo': f"d{cont}-{data[:10]}", 'tipo': tipo, 'valor': -int(valor), 'data': data}
     
 def criarInvestimento(valor, titulo):
     dados = ler_dados()

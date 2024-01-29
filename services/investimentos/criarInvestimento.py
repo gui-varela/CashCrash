@@ -14,8 +14,7 @@ investimentos no menu (opção 4).
     [1] - Investir novamente
     [2] - Menu Principal
 
-Sua escolha: 
-    '''.format(tipo)
+Sua escolha:  '''.format(tipo)
 
     dados = ler_dados()
     novoInvestimento = criarInvestimento(valor, tipo)
